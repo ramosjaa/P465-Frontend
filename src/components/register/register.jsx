@@ -4,13 +4,13 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
 
 const Register = () => {
-    // State for form fields
+    // form fields
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault(); // prevent default form submission
         try {
             const response = await fetch('http://127.0.0.1:8000/auth/register/', { // django server (localhost for now)
                 method: 'POST',

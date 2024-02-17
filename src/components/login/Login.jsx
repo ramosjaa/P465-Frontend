@@ -4,6 +4,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
 
 const Login = () => {
+    //form fields
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
