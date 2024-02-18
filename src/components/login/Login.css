@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     width: 350px;
     background: #5890ff;
     display: flex;
@@ -8,13 +8,13 @@
     padding: 20px;
 }
 
-.wrapper .input-box{
+.wrapper .input-box {
     position: relative;
     height: 50px;
     margin: 30px 0;
 }
 
-.input-box input{
+.input-box input {
     background-color: #9ec0ff;
     color: #000000;
     text-align: center;
@@ -24,11 +24,11 @@
     border-radius: 50px;
 }
 
-.input-box input::placeholder{
+.input-box input::placeholder {
     color: #000000;
 }
 
-.wrapper button{
+.wrapper button {
     width: 75%;
     height: 45px;
     background-color: #000000;
@@ -39,22 +39,31 @@
     margin: 20px;
 }
 
-.wrapper button:hover{
+.wrapper button:hover {
     color: #000000;
 }
 
-.wrapper a{
+.wrapper a {
     color: #000000;
 }
 
-.wrapper a:hover{
+.wrapper a:hover {
     color: #ffffff;
 }
 
-.wrapper .register{
+.wrapper .register {
     margin-bottom: 10px;
 }
 
-.wrapper .icon{
+.wrapper .icon {
     margin-right: 10px;
+}
+
+/* Additional styles for the registration form */
+.wrapper h1 {
+    color: #ffffff;
+}
+
+.wrapper .login p {
+    color: #ffffff;
 }

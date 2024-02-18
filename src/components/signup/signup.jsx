@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-import './register.css';
+import './signup.css';
 import {useGoogleLogin} from "@react-oauth/google";
 
 
@@ -10,6 +10,7 @@ function SignupForm() {
         firstName: '',
         lastName: '',
         phoneNumber: '',
+        username: '',
         password: '',
         confirmPassword: '',
         agreeTerms: false
@@ -23,10 +24,47 @@ function SignupForm() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Implement your signup logic here
-        console.log(formData);
+        
+        if (formData.password !== formData.confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+        if (!formData.agreeTerms) {
+            alert("You must agree to the terms and conditions!");
+            return;
+        }
+
+        const payload = {
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+            
+        };
+
+        try {
+            const response = await fetch('http://localhost:8000/auth/signup/', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            const data = await response.json();
+            if (response.ok) {
+                console.log('Registration Success:', data);
+                //post-signup logic here
+                window.location.href = '/dashboard';
+            } else {
+                console.error('Registration Error:', data.error);
+                alert('Registration Failed: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Request Failed:', error);
+            alert('An error occurred. Please try again.');
+        }
     };
 
     const googleLogin = useGoogleLogin({
@@ -35,6 +73,7 @@ function SignupForm() {
 
             // Extract the code from the response
             const authCode = codeResponse.code;
+
         },
             onError: (error) => {
                 console.error('Google login error:', error);
@@ -96,16 +135,31 @@ function SignupForm() {
 
                                             <div className="d-flex flex-row align-items-center mb-3">
                                                 <div className="form-outline flex-fill mb-0">
-                                                    <label htmlFor="PhoneNumber" className="form-label">Phone
-                                                        number</label>
+                                                    <label htmlFor="Email" className="form-label">Email</label>
                                                     <input
-                                                        type="tel"
-                                                        id="phoneNumber"
-                                                        name="phoneNumber"
+                                                        type="email"
+                                                        id="email"
+                                                        name="email"
                                                         className="form-control"
-                                                        value={formData.phoneNumber}
+                                                        value={formData.email}
                                                         onChange={handleChange}
-                                                        placeholder="Phone number"
+                                                        placeholder="Email"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex flex-row align-items-center mb-3">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="Username" className="form-label">Username</label>
+                                                    <input
+                                                        type="text"
+                                                        id="username"
+                                                        name="username"
+                                                        className="form-control"
+                                                        value={formData.username}
+                                                        onChange={handleChange}
+                                                        placeholder="Username"
                                                         required
                                                     />
                                                 </div>
