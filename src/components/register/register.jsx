@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
+import './register.css';
+import {useGoogleLogin} from "@react-oauth/google";
 
 
 function SignupForm() {
@@ -27,24 +29,40 @@ function SignupForm() {
         console.log(formData);
     };
 
+    const googleLogin = useGoogleLogin({
+        onSuccess: async (codeResponse) => {
+            console.log(codeResponse);
+
+            // Extract the code from the response
+            const authCode = codeResponse.code;
+        },
+            onError: (error) => {
+                console.error('Google login error:', error);
+            },
+                flow: 'auth-code',
+        }
+        );
+
 
     return (
         // <section className="container-lg min-vh-100" style={{backgroundColor: "#eee"}}>
             <div className="container h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
-                    <div className="col-lg-12 col-xl-11">
+                    <div className="col-lg-10 col-xl-9">
                         <div className="card text-black" style={{borderRadius: "25px"}}>
                             <div className="card-body p-md-5">
                                 <div className="row justify-content-center">
                                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                        <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Create a Rhythm
+                                        <p className="text-center h3 flex-row fw-bold mb-4 mx-1 mx-md-4 mt-4">Create a Rhythm
                                             Reserve Account</p>
 
-                                        <form onSubmit={handleSubmit}>
-                                            <div className="d-flex flex-row align-items-center mb-4">
-                                                <div className="form-outline flex-fill mb-0">
-                                                    <label htmlFor="FirstName" className="form-label">First name</label>
+                                        <form className='row d-flex' onSubmit={handleSubmit}>
+                                            <div className="d-flex flex-row align-items-center mb-3 half-width-inputs">
+                                                {/*<div className="d-flex flex-row align-items-center mb-4">*/}
+                                                <div className="form-outline flex-fill mb-0 me-3">
+                                                    <label htmlFor="FirstName" className="form-label">First
+                                                        name</label>
                                                     <input
                                                         type="text"
                                                         id="firstName"
@@ -56,11 +74,12 @@ function SignupForm() {
                                                         required
                                                     />
                                                 </div>
-                                            </div>
+                                                {/*</div>*/}
 
-                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                {/*<div className="d-flex flex-row align-items-center mb-4">*/}
                                                 <div className="form-outline flex-fill mb-0">
-                                                    <label htmlFor="LastName" className="form-label">Last name</label>
+                                                    <label htmlFor="LastName" className="form-label">Last
+                                                        name</label>
                                                     <input
                                                         type="text"
                                                         id="lastName"
@@ -72,9 +91,10 @@ function SignupForm() {
                                                         required
                                                     />
                                                 </div>
+                                                {/*</div>*/}
                                             </div>
 
-                                            <div className="d-flex flex-row align-items-center mb-4">
+                                            <div className="d-flex flex-row align-items-center mb-3">
                                                 <div className="form-outline flex-fill mb-0">
                                                     <label htmlFor="PhoneNumber" className="form-label">Phone
                                                         number</label>
@@ -91,9 +111,10 @@ function SignupForm() {
                                                 </div>
                                             </div>
 
-                                            <div className="d-flex flex-row align-items-center mb-4">
+                                            <div className="d-flex flex-row align-items-center mb-3">
                                                 <div className="form-outline flex-fill mb-0">
-                                                    <label htmlFor="Password" className="form-label">Password</label>
+                                                    <label htmlFor="Password"
+                                                           className="form-label">Password</label>
                                                     <input
                                                         type="password"
                                                         id="password"
@@ -107,7 +128,7 @@ function SignupForm() {
                                                 </div>
                                             </div>
 
-                                            <div className="d-flex flex-row align-items-center mb-4">
+                                            <div className="d-flex flex-row align-items-center mb-3">
                                                 <div className="form-outline flex-fill mb-0">
                                                     <label htmlFor="Re-enter password" className="form-label">Re-enter
                                                         password</label>
@@ -124,31 +145,43 @@ function SignupForm() {
                                                 </div>
                                             </div>
 
-                                            <div className="form-check d-flex justify-content-md-start mb-5">
+                                            <div className="form-check d-flex justify-content-md-start mx-2 mb-3">
                                                 <input
-                                                    className="form-check-input me-2"
+                                                    className="form-check-input small me-2"
                                                     type="checkbox"
                                                     id="agreeTerms"
                                                     name="agreeTerms"
                                                     checked={formData.agreeTerms}
                                                     onChange={handleChange}
                                                 />
-                                                <label className="form-check-label" htmlFor="agreeTerms">
-                                                    I agree to the Rhythm Reserve User Agreement, Privacy Policy, and
-                                                    Non-Discrimination Policy.
+                                                <label className="form-check-label small" htmlFor="agreeTerms">
+                                                    I agree to the Rhythm Reserve User Agreement, Privacy Policy,
+                                                    and Non-Discrimination Policy.
                                                 </label>
                                             </div>
 
-                                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-3">
                                                 <button className="btn btn-primary btn-lg" type="submit"
                                                         onClick={() => console.log('Form Submitted', formData)}>Create
                                                     account
                                                 </button>
                                             </div>
-                                            <p className="text-center">Or continue with</p>
+
+                                            <div className="container">
+                                                <div className="row d-flex">
+                                                    <div className="col-md-8">
+                                                        <p>Already have an account?</p>
+                                                    </div>
+                                                    <div className="col-md-3">
+                                                        <a href="/login">Login</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <p className="text-center mb-2">Or continue with</p>
                                             <div className="d-flex justify-content-center">
                                                 <button className="btn btn-lg btn-google me-2"
-                                                        onClick={() => console.log('Continue with Google')}>
+                                                        onClick={googleLogin}>
                                                     <i className="fab fa-google me-2"></i> Google
                                                 </button>
                                                 <button className="btn btn-lg btn-facebook"
