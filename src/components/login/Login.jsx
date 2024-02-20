@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../App'; 
 import './Login.css'
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
@@ -8,6 +11,9 @@ function LoginForm() {
         email: '',
         password: '',
     });
+
+    const navigate = useNavigate(); //navigation for pages
+    const { login } = useContext(AuthContext); //user's login session
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,7 +44,8 @@ function LoginForm() {
             if (response.ok) {
                 console.log('Login Success:', data);
                 //post-login logic
-                window.location.href = '/dashboard';
+                login() //user logged in, update AuthContext
+                navigate('/dashboard') //navigate to dashboard
             } else {
                 console.error('Login Error:', data.error);
                 alert('Login Failed: ' + data.error);

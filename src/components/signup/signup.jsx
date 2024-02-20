@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../App'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './signup.css';
-import {useGoogleLogin} from "@react-oauth/google";
+import {GoogleLogin} from "@react-oauth/google";
 
 
 function SignupForm() {
@@ -15,6 +18,9 @@ function SignupForm() {
         confirmPassword: '',
         agreeTerms: false
     });
+
+    const navigate = useNavigate(); //navigation for pages
+    const { login } = useContext(AuthContext); //user's login session
 
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
@@ -37,10 +43,12 @@ function SignupForm() {
         }
 
         const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
             username: formData.username,
             email: formData.email,
             password: formData.password,
-            
+            phoneNumber: formData.phoneNumber
         };
 
         try {
@@ -55,8 +63,9 @@ function SignupForm() {
             const data = await response.json();
             if (response.ok) {
                 console.log('Registration Success:', data);
-                //post-signup logic here
-                window.location.href = '/dashboard';
+                //post-signup logic
+                login() //user logged in, update AuthContext
+                navigate('/dashboard') //navigate to dashboard
             } else {
                 console.error('Registration Error:', data.error);
                 alert('Registration Failed: ' + data.error);
@@ -67,7 +76,7 @@ function SignupForm() {
         }
     };
 
-    const googleLogin = useGoogleLogin({
+    const googleLogin = GoogleLogin({
         onSuccess: async (codeResponse) => {
             console.log(codeResponse);
 
@@ -144,6 +153,22 @@ function SignupForm() {
                                                         value={formData.email}
                                                         onChange={handleChange}
                                                         placeholder="Email"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex flex-row align-items-center mb-3">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="PhoneNumber" className="form-label">Phone Number</label>
+                                                    <input
+                                                        type="tel"
+                                                        id="PhoneNumber"
+                                                        name="phoneNumber"
+                                                        className="form-control"
+                                                        value={formData.phoneNumber}
+                                                        onChange={handleChange}
+                                                        placeholder="Phone Number"
                                                         required
                                                     />
                                                 </div>
