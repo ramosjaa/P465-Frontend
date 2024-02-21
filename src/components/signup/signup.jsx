@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
 import { AuthContext } from '../../App'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
@@ -20,8 +19,19 @@ function SignupForm() {
     });
 
     const navigate = useNavigate(); //navigation for pages
-    const { login } = useContext(AuthContext); //user's login session
+    const { isAuthenticated, login } = useContext(AuthContext); //user's login session
 
+    useEffect(() => {
+        document.title = 'Signup | RhythmReserve';
+    }, []);
+
+    useEffect(() => {
+        // Redirect to dashboard if already logged in
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
+    
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
         setFormData(prevFormData => ({

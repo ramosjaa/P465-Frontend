@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
 import { AuthContext } from '../../App'; 
 import './Login.css'
 import { FaRegUserCircle } from "react-icons/fa";
@@ -13,7 +12,18 @@ function LoginForm() {
     });
 
     const navigate = useNavigate(); //navigation for pages
-    const { login } = useContext(AuthContext); //user's login session
+    const { isAuthenticated, login } = useContext(AuthContext); //user's login session
+
+    useEffect(() => {
+        document.title = 'Login | RhythmReserve';
+    }, []);
+
+    useEffect(() => {
+        // Redirect to dashboard if already logged in
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
