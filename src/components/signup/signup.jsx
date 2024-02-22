@@ -12,6 +12,7 @@ function SignupForm() {
         firstName: '',
         lastName: '',
         phoneNumber: '',
+        spotifyUsername: '',
         username: '',
         password: '',
         confirmPassword: '',
@@ -58,7 +59,8 @@ function SignupForm() {
             username: formData.username,
             email: formData.email,
             password: formData.password,
-            phoneNumber: formData.phoneNumber
+            phoneNumber: formData.phoneNumber,
+            spotifyUsername: formData.spotifyUsername
         };
 
         try {
@@ -179,6 +181,22 @@ function SignupForm() {
                                                         value={formData.phoneNumber}
                                                         onChange={handleChange}
                                                         placeholder="Phone Number"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex flex-row align-items-center mb-3">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="SpotifyUsername" className="form-label">Spotify Username</label>
+                                                    <input
+                                                        type="tel"
+                                                        id="SpotifyUsername"
+                                                        name="spotifyUsername"
+                                                        className="form-control"
+                                                        value={formData.spotifyUsername}
+                                                        onChange={handleChange}
+                                                        placeholder="Spotify username"
                                                         required
                                                     />
                                                 </div>
