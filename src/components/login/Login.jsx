@@ -4,6 +4,7 @@ import { AuthContext } from '../../App';
 import './Login.css'
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -37,7 +38,7 @@ function LoginForm() {
         e.preventDefault();
 
         const payload = {
-            usernameOrEmail: loginData.usernameOrEmail,
+            email: loginData.email,
             password: loginData.password,
         };
 
@@ -80,15 +81,15 @@ function LoginForm() {
                                     <form className='row d-flex' onSubmit={handleSubmit}>
                                         <div className="d-flex flex-row align-items-center mb-4">
                                             <div className="form-outline flex-fill mb-0">
-                                                <label htmlFor="usernameOrEmail" className="form-label">Username or Email</label>
+                                                <label htmlFor="Email" className="form-label">Email</label>
                                                 <input
-                                                    type="text"
-                                                    id="usernameOrEmail"
-                                                    name="usernameOrEmail"
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
                                                     className="form-control"
-                                                    value={loginData.usernameOrEmail}
+                                                    value={loginData.email}
                                                     onChange={handleChange}
-                                                    placeholder="Username or Email"
+                                                    placeholder="Email"
                                                     required
                                                 />
                                             </div>
@@ -110,8 +111,15 @@ function LoginForm() {
                                             </div>
                                         </div>
 
-                                        <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                        <div className="d-flex justify-content-center mx-5 mb-3 mb-lg-4">
                                             <button className="btn btn-primary btn-lg" type="submit">Login</button>
+                                            
+                                            <div className="container">
+                                                <div className="row d-flex">
+                                                    <Link to="/password-reset">Forgot password?</Link>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div className="text-center">

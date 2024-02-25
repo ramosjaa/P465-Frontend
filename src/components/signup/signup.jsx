@@ -284,7 +284,6 @@ function SignupForm() {
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <p className="text-center mb-2">Or continue with</p>
                                             <div className="d-flex justify-content-center">
                                                 <button className="btn btn-lg btn-google me-2"
