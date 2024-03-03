@@ -8,6 +8,7 @@ import Dashboard from './components/dashboard/dashboard';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminDashRedirect from './components/AdminDashRedirect';
+import LandingPage from "./components/landingpage/landingpage";
 
 
 // auth context for user
@@ -56,6 +57,7 @@ function App() {
     <AuthContext.Provider value={authContextValue}>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/password-reset" element={<PasswordResetForm />} />
