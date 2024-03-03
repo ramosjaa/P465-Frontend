@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../App'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-import './register.css';
-import {useGoogleLogin} from "@react-oauth/google";
+import './signup.css';
+import {GoogleLogin} from "@react-oauth/google";
 
 
 function SignupForm() {
@@ -10,11 +12,27 @@ function SignupForm() {
         firstName: '',
         lastName: '',
         phoneNumber: '',
+        spotifyUsername: '',
+        username: '',
         password: '',
         confirmPassword: '',
         agreeTerms: false
     });
 
+    const navigate = useNavigate(); //navigation for pages
+    const { isAuthenticated, login } = useContext(AuthContext); //user's login session
+
+    useEffect(() => {
+        document.title = 'Signup | RhythmReserve';
+    }, []);
+
+    useEffect(() => {
+        // Redirect to dashboard if already logged in
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
+    
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
         setFormData(prevFormData => ({
@@ -23,18 +41,60 @@ function SignupForm() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Implement your signup logic here
-        console.log(formData);
+        
+        if (formData.password !== formData.confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+        if (!formData.agreeTerms) {
+            alert("You must agree to the terms and conditions!");
+            return;
+        }
+
+        const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+            phoneNumber: formData.phoneNumber,
+            spotifyUsername: formData.spotifyUsername
+        };
+
+        try {
+            const response = await fetch('http://localhost:8000/auth/signup/', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            const data = await response.json();
+            if (response.ok) {
+                console.log('Registration Success:', data);
+                //post-signup logic
+                login() //user logged in, update AuthContext
+                navigate('/dashboard') //navigate to dashboard
+            } else {
+                console.error('Registration Error:', data.error);
+                alert('Registration Failed: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Request Failed:', error);
+            alert('An error occurred. Please try again.');
+        }
     };
 
-    const googleLogin = useGoogleLogin({
+    const googleLogin = GoogleLogin({
         onSuccess: async (codeResponse) => {
             console.log(codeResponse);
 
             // Extract the code from the response
             const authCode = codeResponse.code;
+
         },
             onError: (error) => {
                 console.error('Google login error:', error);
@@ -94,16 +154,63 @@ function SignupForm() {
 
                                             <div className="d-flex flex-row align-items-center mb-3">
                                                 <div className="form-outline flex-fill mb-0">
-                                                    <label htmlFor="PhoneNumber" className="form-label">Phone
-                                                        number</label>
+                                                    <label htmlFor="Email" className="form-label">Email</label>
+                                                    <input
+                                                        type="email"
+                                                        id="email"
+                                                        name="email"
+                                                        className="form-control"
+                                                        value={formData.email}
+                                                        onChange={handleChange}
+                                                        placeholder="Email"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex flex-row align-items-center mb-3">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="PhoneNumber" className="form-label">Phone Number</label>
                                                     <input
                                                         type="tel"
-                                                        id="phoneNumber"
+                                                        id="PhoneNumber"
                                                         name="phoneNumber"
                                                         className="form-control"
                                                         value={formData.phoneNumber}
                                                         onChange={handleChange}
-                                                        placeholder="Phone number"
+                                                        placeholder="Phone Number"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex flex-row align-items-center mb-3">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="SpotifyUsername" className="form-label">Spotify Username</label>
+                                                    <input
+                                                        type="tel"
+                                                        id="SpotifyUsername"
+                                                        name="spotifyUsername"
+                                                        className="form-control"
+                                                        value={formData.spotifyUsername}
+                                                        onChange={handleChange}
+                                                        placeholder="Spotify username"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="d-flex flex-row align-items-center mb-3">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="Username" className="form-label">Username</label>
+                                                    <input
+                                                        type="text"
+                                                        id="username"
+                                                        name="username"
+                                                        className="form-control"
+                                                        value={formData.username}
+                                                        onChange={handleChange}
+                                                        placeholder="Username"
                                                         required
                                                     />
                                                 </div>
@@ -175,7 +282,6 @@ function SignupForm() {
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <p className="text-center mb-2">Or continue with</p>
                                             <div className="d-flex justify-content-center">
                                                 <button className="btn btn-lg btn-google me-2"
