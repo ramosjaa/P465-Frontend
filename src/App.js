@@ -63,6 +63,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/vsignup" element={<VenueSignup />}/>
+          <Route path="/admin-dash" element={<AdminDashRedirect />} />
           <Route path="/password-reset" element={<PasswordResetForm />} />
           <Route 
             path="/dashboard" 
