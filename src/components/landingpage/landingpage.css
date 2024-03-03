@@ -1,0 +1,54 @@
+.home-page {
+    background: url("../assets/concert.png") no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width:100%;
+}
+
+.nav-fullwidth {
+    height: 60px;
+    width: 100%;
+}
+
+.main-header {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    background: none;
+}
+
+.header-content {
+    /*background-color: grey;*/
+    padding: 2rem;
+    color: azure;
+    margin-bottom: 2rem; /* Adjust as needed */
+}
+
+.navbar .navbar-brand {
+    font-weight: bold;
+}
+
+.btn-styles {
+    background-color: darkslateblue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    /*font-weight: bold;*/
+    cursor: pointer;
+}
+
+.custom-nav-links {
+    color: yellow;
+    text-shadow: none;
+}
+
+.custom-nav-links:hover {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
