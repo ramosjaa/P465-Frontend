@@ -1,0 +1,50 @@
+/* admin-dashboard.css */
+body {
+    background-color: #f4f7fa;
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.nav-link {
+    color: #fff !important;
+    margin-right: 15px;
+}
+
+h2 {
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Cards for events and venues */
+.card {
+    margin: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Add more styles as needed */
