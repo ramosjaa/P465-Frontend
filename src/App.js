@@ -53,6 +53,7 @@ function App() {
     return children;
   };
 
+  // adding paths
   return (
     <AuthContext.Provider value={authContextValue}>
       <BrowserRouter>
