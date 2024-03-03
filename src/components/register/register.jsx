@@ -45,7 +45,6 @@ function SignupForm() {
 
 
     return (
-        // <section className="container-lg min-vh-100" style={{backgroundColor: "#eee"}}>
             <div className="container h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                     <div className="col-lg-10 col-xl-9">
@@ -53,7 +52,6 @@ function SignupForm() {
                             <div className="card-body p-md-5">
                                 <div className="row justify-content-center">
                                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
                                         <p className="text-center h3 flex-row fw-bold mb-4 mx-1 mx-md-4 mt-4">Create a Rhythm
                                             Reserve Account</p>
 
@@ -160,19 +158,19 @@ function SignupForm() {
                                                 </label>
                                             </div>
 
-                                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-3">
+                                            <div className="d-flex justify-content-center mb-3 mb-lg-3">
                                                 <button className="btn btn-primary btn-lg" type="submit"
                                                         onClick={() => console.log('Form Submitted', formData)}>Create
                                                     account
                                                 </button>
                                             </div>
 
-                                            <div className="container">
+                                            <div className="container-fluid ml-4">
                                                 <div className="row d-flex">
-                                                    <div className="col-md-8">
+                                                    <div className="col-md-7 text-end justify-content-end">
                                                         <p>Already have an account?</p>
                                                     </div>
-                                                    <div className="col-md-3">
+                                                    <div className="col-md-5 d-flex text-start justify-content-start">
                                                         <a href="/login">Login</a>
                                                     </div>
                                                 </div>
@@ -197,8 +195,6 @@ function SignupForm() {
                     </div>
                 </div>
             </div>
-
-        // </section>
     );
 }
 
