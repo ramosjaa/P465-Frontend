@@ -23,7 +23,7 @@ function SignupForm() {
     const { isAuthenticated, login } = useContext(AuthContext); //user's login session
 
     useEffect(() => {
-        document.title = 'Signup | RhythmReserve';
+        document.title = 'Sign Up | RhythmReserve';
     }, []);
 
     useEffect(() => {
@@ -64,7 +64,7 @@ function SignupForm() {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/auth/signup/', { 
+            const response = await fetch('https://p465-backend-latest.onrender.com/auth/signup/', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -282,6 +282,7 @@ function SignupForm() {
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <p className="text-center mb-2">Or continue with</p>
                                             <div className="d-flex justify-content-center">
                                                 <button className="btn btn-lg btn-google me-2"
