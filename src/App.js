@@ -8,7 +8,7 @@ import Login from './components/login/Login';
 import Dashboard from './components/dashboard/dashboard';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AdminDashRedirect from './components/AdminDashRedirect';
+import AdminDashRedirect from './components/admindashredirect/AdminDashRedirect';
 import LandingPage from "./components/landingpage/landingpage";
 
 
