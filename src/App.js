@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PasswordResetForm from './components/password_reset/PasswordResetForm';
 import SignupForm from './components/signup/signup';
+import VenueSignup from './components/venue_signup/venue_signup';
 import Login from './components/login/Login';
 import Dashboard from './components/dashboard/dashboard';
 import './App.css';
@@ -58,6 +59,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignupForm />} />
+          <Route path="/venue_signup" element={<VenueSignup />}/>
           <Route path="/password-reset" element={<PasswordResetForm />} />
           <Route 
             path="/dashboard" 

@@ -23,7 +23,7 @@ function SignupForm() {
     const { isAuthenticated, login } = useContext(AuthContext); //user's login session
 
     useEffect(() => {
-        document.title = 'Signup | RhythmReserve';
+        document.title = 'Sign Up | RhythmReserve';
     }, []);
 
     useEffect(() => {
@@ -284,6 +284,11 @@ function SignupForm() {
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div className="container">
+                                                <a href="/venue_signup">Venue Sign Up</a>
+                                            </div>
+
                                             <p className="text-center mb-2">Or continue with</p>
                                             <div className="d-flex justify-content-center">
                                                 <button className="btn btn-lg btn-google me-2"
