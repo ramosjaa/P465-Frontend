@@ -21,7 +21,7 @@ const LandingPage = () => {
                         <div>
                             <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
                             <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">Reg Signup</Button>
-                            <Button className="btn-styles me-5" variant="primary" size="sm" href="#venuesignup">Venue Signup</Button>
+                            <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
                         </div>
                     </Navbar.Collapse>
                 </Container>

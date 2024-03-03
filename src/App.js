@@ -62,7 +62,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignupForm />} />
-          <Route path="/venue_signup" element={<VenueSignup />}/>
+          <Route path="/vsignup" element={<VenueSignup />}/>
           <Route path="/password-reset" element={<PasswordResetForm />} />
           <Route 
             path="/dashboard" 

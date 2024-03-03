@@ -64,7 +64,7 @@ function SignupForm() {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/auth/signup/', { 
+            const response = await fetch('https://p465-backend-latest.onrender.com/auth/signup/', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -281,10 +281,6 @@ function SignupForm() {
                                                         <a href="/login">Login</a>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div className="container">
-                                                <a href="/venue_signup">Venue Sign Up</a>
                                             </div>
 
                                             <p className="text-center mb-2">Or continue with</p>

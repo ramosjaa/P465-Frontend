@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const AdminDashRedirect = () => {
   useEffect(() => {
-    window.location.href = 'http://localhost:8000/admin/';
+    window.location.href = 'https://p465-backend-latest.onrender.com/admin/';
   }, []);
   return null;
 };
