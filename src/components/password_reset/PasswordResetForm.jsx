@@ -161,7 +161,7 @@ function PasswordResetForm() {
                             <div>
                                 <h2>Enter Code</h2>
                                 <form onSubmit={handleCodeSubmit} className="d-flex flex-column align-items-center">
-                                    <div>
+                                    <div className="form-outline flex-fill mb-0">
                                         <input
                                             type="text"
                                             value={resetCode}
@@ -205,7 +205,7 @@ function PasswordResetForm() {
                         <div className="card-body p-md-5">
                             <h2>Enter New Password</h2>
                             <form onSubmit={handleResetSubmit} className="d-flex flex-column align-items-center">
-                                <div className="input-box">
+                                <div className="form-outline flex-fill mb-0">
                                     <input
                                         type="text"
                                         value={password}
@@ -215,7 +215,7 @@ function PasswordResetForm() {
                                     />
                                 </div>
 
-                                <div className="input-box">
+                                <div className="form-outline flex-fill mb-0">
                                     <input
                                         type="text"
                                         value={confirmPassword}
@@ -225,7 +225,7 @@ function PasswordResetForm() {
                                     />
                                 </div>
 
-                                <button type="submit" className="btn">Send Password Reset Email</button>
+                                <button type="submit" className="btn btn-primary btn-lg">Reset</button>
                             </form>
                         </div>
                     </div>
