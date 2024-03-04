@@ -16,10 +16,12 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="dashboard">
-            <h1>Welcome to the Dashboard</h1>
-            <p>You are now logged in.</p>
-            <button onClick={handleLogout} className="btn btn-primary">Logout</button>
+        <div className = "home-page">
+            <div className="dashboard">
+                <h1>Welcome to the Dashboard</h1>
+                <p>You are now logged in.</p>
+                <button onClick={handleLogout} className="btn btn-primary">Logout</button>
+            </div>
         </div>
     );
 };

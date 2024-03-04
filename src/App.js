@@ -59,7 +59,7 @@ function App() {
     <AuthContext.Provider value={authContextValue}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/vsignup" element={<VenueSignup />}/>
@@ -74,7 +74,7 @@ function App() {
           />
           <Route path="/admin" element={<AdminDashRedirect />} />
           {/* redirect to login if no other routes matched (can update to splash maybe?) */}
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>

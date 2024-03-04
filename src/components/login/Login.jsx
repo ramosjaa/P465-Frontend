@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../App'; 
+import { AuthContext } from '../../App';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../App.css';
 import './Login.css'
-import { FaRegUserCircle } from "react-icons/fa";
-import { IoLockClosedOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
 function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -43,7 +44,8 @@ function LoginForm() {
         };
 
         try {
-            const response = await fetch('https://p465-backend-latest.onrender.com/auth/login/', {
+            //const response = await fetch('https://p465-backend-latest.onrender.com/auth/login/', {
+            const response = await fetch('http://localhost:8000/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,71 +70,91 @@ function LoginForm() {
     };
 
     return (
-        <div className="container h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-                <div className="col-lg-10 col-xl-9">
-                    <div className="card text-black" style={{borderRadius: "25px"}}>
-                        <div className="card-body p-md-5">
-                            <div className="row justify-content-center">
-                                <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+        <div className="home-page">
+            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
+                <Container fluid>
+                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ml-auto fw-normal custom-nav-links">
+                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
+                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
+                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
+                        </Nav>
+                        <div>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">User Signup</Button>
+                            <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
+                        </div>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <div className="container h-100">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                    <div className="col-lg-10 col-xl-9">
+                        <div className="card text-black" style={{ borderRadius: "25px" }}>
+                            <div className="card-body p-md-5">
+                                <div className="row justify-content-center">
+                                    <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                    <p className="text-center h3 fw-bold mb-4 mx-1 mx-md-4 mt-4">Login to Your Account</p>
+                                        <p className="text-center h3 fw-bold mb-4 mx-1 mx-md-4 mt-4">Login to Your Account</p>
 
-                                    <form className='row d-flex' onSubmit={handleSubmit}>
-                                        <div className="d-flex flex-row align-items-center mb-4">
-                                            <div className="form-outline flex-fill mb-0">
-                                                <label htmlFor="Email" className="form-label">Email</label>
-                                                <input
-                                                    type="email"
-                                                    id="email"
-                                                    name="email"
-                                                    className="form-control"
-                                                    value={loginData.email}
-                                                    onChange={handleChange}
-                                                    placeholder="Email"
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="d-flex flex-row align-items-center mb-4">
-                                            <div className="form-outline flex-fill mb-0">
-                                                <label htmlFor="Password" className="form-label">Password</label>
-                                                <input
-                                                    type="password"
-                                                    id="password"
-                                                    name="password"
-                                                    className="form-control"
-                                                    value={loginData.password}
-                                                    onChange={handleChange}
-                                                    placeholder="Password"
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="d-flex justify-content-center mx-5 mb-3 mb-lg-4">
-                                            <button className="btn btn-primary btn-lg" type="submit">Login</button>
-                                            
-                                            <div className="container">
-                                                <div className="row d-flex">
-                                                    <Link to="/password-reset">Forgot password?</Link>
+                                        <form className='row d-flex' onSubmit={handleSubmit}>
+                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="Email" className="form-label">Email</label>
+                                                    <input
+                                                        type="email"
+                                                        id="email"
+                                                        name="email"
+                                                        className="form-control"
+                                                        value={loginData.email}
+                                                        onChange={handleChange}
+                                                        placeholder="Email"
+                                                        required
+                                                    />
                                                 </div>
                                             </div>
 
-                                        </div>
+                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                <div className="form-outline flex-fill mb-0">
+                                                    <label htmlFor="Password" className="form-label">Password</label>
+                                                    <input
+                                                        type="password"
+                                                        id="password"
+                                                        name="password"
+                                                        className="form-control"
+                                                        value={loginData.password}
+                                                        onChange={handleChange}
+                                                        placeholder="Password"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
 
-                                        <div className="text-center">
-                                            <p>Don't have an account? <a href="/signup">Signup</a></p>
-                                            <p>Or continue with</p>
-                                            <button className="btn btn-lg btn-google me-2" onClick={() => console.log('Continue with Google')}>
-                                                <i className="fab fa-google me-2"></i> Google
-                                            </button>
-                                            <button className="btn btn-lg btn-facebook" onClick={() => console.log('Continue with Facebook')}>
-                                                <i className="fab fa-facebook me-2"></i> Facebook
-                                            </button>
-                                        </div>
-                                    </form>
+                                            <div className="d-flex justify-content-center mx-5 mb-3 mb-lg-4">
+                                                <button className="btn btn-primary btn-lg" type="submit">Login</button>
+
+                                                <div className="container">
+                                                    <div className="row d-flex">
+                                                        <Link to="/password-reset">Forgot password?</Link>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div className="text-center">
+                                                <p>Don't have an account? <a href="/signup">Signup</a></p>
+                                                <p>Or continue with</p>
+                                                <button className="btn btn-lg btn-google me-2" onClick={() => console.log('Continue with Google')}>
+                                                    <i className="fab fa-google me-2"></i> Google
+                                                </button>
+                                                <button className="btn btn-lg btn-facebook" onClick={() => console.log('Continue with Facebook')}>
+                                                    <i className="fab fa-facebook me-2"></i> Facebook
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

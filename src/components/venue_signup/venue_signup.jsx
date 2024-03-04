@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-// import './signup.css';
+import './venue_signup.css';
 import { GoogleLogin } from "@react-oauth/google";
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
@@ -65,7 +65,7 @@ function VenueSignupForm() {
         };
 
         try {
-            const response = await fetch('https://p465-backend-latest.onrender.com/auth/vsignup/', {
+            const response = await fetch('http://localhost:8000/auth/vsignup/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -108,10 +108,10 @@ function VenueSignupForm() {
 
 
     return (
-        <div>
+        <div className="home-page">
             <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
                 <Container fluid>
-                    <Navbar.Brand href="#home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto fw-normal custom-nav-links">
@@ -121,14 +121,14 @@ function VenueSignupForm() {
                         </Nav>
                         <div>
                             <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">Reg Signup</Button>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">User Signup</Button>
                             <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
                         </div>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
             
-            <section className="container-lg min-vh-100" style={{ backgroundColor: "#eee" }}>
+            <section className="container-lg min-vh-100">
                 <div className="container h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">
                         <div className="col-lg-10 col-xl-9">

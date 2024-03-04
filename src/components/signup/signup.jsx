@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../App'; 
+import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './signup.css';
-import {GoogleLogin} from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
 
 function SignupForm() {
@@ -32,9 +33,9 @@ function SignupForm() {
             navigate('/dashboard');
         }
     }, [isAuthenticated, navigate]);
-    
+
     const handleChange = (e) => {
-        const {name, value, type, checked} = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData(prevFormData => ({
             ...prevFormData,
             [name]: type === 'checkbox' ? checked : value
@@ -43,7 +44,7 @@ function SignupForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match!");
             return;
@@ -64,14 +65,14 @@ function SignupForm() {
         };
 
         try {
-            const response = await fetch('https://p465-backend-latest.onrender.com/auth/signup/', { 
+            const response = await fetch('http://localhost:8000/auth/signup/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             const data = await response.json();
             if (response.ok) {
                 console.log('Registration Success:', data);
@@ -96,19 +97,38 @@ function SignupForm() {
             const authCode = codeResponse.code;
 
         },
-            onError: (error) => {
-                console.error('Google login error:', error);
-            },
-                flow: 'auth-code',
-        }
-        );
+        onError: (error) => {
+            console.error('Google login error:', error);
+        },
+        flow: 'auth-code',
+    }
+    );
 
 
     return (
+        <div className="home-page">
+            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
+                <Container fluid>
+                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ml-auto fw-normal custom-nav-links">
+                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
+                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
+                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
+                        </Nav>
+                        <div>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">User Signup</Button>
+                            <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
+                        </div>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
             <div className="container h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                     <div className="col-lg-10 col-xl-9">
-                        <div className="card text-black" style={{borderRadius: "25px"}}>
+                        <div className="card text-black" style={{ borderRadius: "25px" }}>
                             <div className="card-body p-md-5">
                                 <div className="row justify-content-center">
                                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
@@ -219,7 +239,7 @@ function SignupForm() {
                                             <div className="d-flex flex-row align-items-center mb-3">
                                                 <div className="form-outline flex-fill mb-0">
                                                     <label htmlFor="Password"
-                                                           className="form-label">Password</label>
+                                                        className="form-label">Password</label>
                                                     <input
                                                         type="password"
                                                         id="password"
@@ -267,7 +287,7 @@ function SignupForm() {
 
                                             <div className="d-flex justify-content-center mb-3 mb-lg-3">
                                                 <button className="btn btn-primary btn-lg" type="submit"
-                                                        onClick={() => console.log('Form Submitted', formData)}>Create
+                                                    onClick={() => console.log('Form Submitted', formData)}>Create
                                                     account
                                                 </button>
                                             </div>
@@ -286,11 +306,11 @@ function SignupForm() {
                                             <p className="text-center mb-2">Or continue with</p>
                                             <div className="d-flex justify-content-center">
                                                 <button className="btn btn-lg btn-google me-2"
-                                                        onClick={googleLogin}>
+                                                    onClick={googleLogin}>
                                                     <i className="fab fa-google me-2"></i> Google
                                                 </button>
                                                 <button className="btn btn-lg btn-facebook"
-                                                        onClick={() => console.log('Continue with Facebook')}>
+                                                    onClick={() => console.log('Continue with Facebook')}>
                                                     <i className="fab fa-facebook me-2"></i> Facebook
                                                 </button>
                                             </div>
@@ -302,6 +322,7 @@ function SignupForm() {
                     </div>
                 </div>
             </div>
+        </div>
     );
 }
 
