@@ -27,7 +27,7 @@ const Dashboard = () => {
                     {[...Array(9)].map((_, index) => (
                         <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
                             <div className="card">
-                                <img src="https://via.placeholder.com/300" className="card-img-top" alt="Placeholder" />
+                                <img src="https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1682714955/brooksschoolorg/aucb7xbkp18dwu78z7mw/cabaret23-thumb.jpg" className="card-img-top" alt="Placeholder" />
                                 <div className="card-body">
                                     <h5 className="card-title">Venue</h5>
                                     <p className="card-text">Click to see concerts</p>
