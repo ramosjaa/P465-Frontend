@@ -16,7 +16,7 @@ function PasswordResetForm() {
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://p465-backend-latest.onrender.com/auth/password_reset_request/', {
+            const response = await fetch('http://localhost:8000/auth/password_reset_request/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ function PasswordResetForm() {
     const handleCodeSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://p465-backend-latest.onrender.com/auth/verify_reset_code/', {
+            const response = await fetch('http://localhost:8000/auth/verify_reset_code/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +126,6 @@ function PasswordResetForm() {
                                             required
                                         />
                                     </div>
-
                                     <button type="submit" className="btn btn-primary btn-lg">Send Reset Code</button>
                                 </form>
                             </div>
@@ -137,55 +136,98 @@ function PasswordResetForm() {
         );
     } else if (step === 2) { //enter code
         return (
-            <div className="container h-100 d-flex justify-content-center align-items-center">
-                <div className="wrapper">
-                    <div>
-                        <h2>Enter Code</h2>
-                        <form onSubmit={handleCodeSubmit} className="d-flex flex-column align-items-center">
-                            <div className="input-box">
-                                <input
-                                    type="text"
-                                    value={resetCode}
-                                    onChange={(e) => setResetCode(e.target.value)}
-                                    placeholder="Code"
-                                    required
-                                />
+            <div className="home-page">
+                <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
+                    <Container fluid>
+                        <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="ml-auto fw-normal custom-nav-links">
+                                <Nav.Link href="#events" className="me-2">Events</Nav.Link>
+                                <Nav.Link href="#live" className="me-2">Live</Nav.Link>
+                                <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
+                            </Nav>
+                            <div>
+                                <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
+                                <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">User Signup</Button>
+                                <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
                             </div>
-                            <button type="submit" className="btn">Submit Code</button>
-                        </form>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+                <div className="container h-100 d-flex justify-content-center align-items-center">
+                    <div className="card text-black" style={{ borderRadius: "25px" }}>
+                        <div className="card-body p-md-5">
+                            <div>
+                                <h2>Enter Code</h2>
+                                <form onSubmit={handleCodeSubmit} className="d-flex flex-column align-items-center">
+                                    <div>
+                                        <input
+                                            type="text"
+                                            value={resetCode}
+                                            onChange={(e) => setResetCode(e.target.value)}
+                                            placeholder="Code"
+                                            required
+                                        />
+                                    </div>
+                                    <button type="submit" className="btn">Submit Code</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
         );
     } else { //enter new password
         return (
-            <div className="container h-100 d-flex justify-content-center align-items-center">
-                <div className="wrapper">
-                    <div>
-                        <h2>Enter New Password</h2>
-                        <form onSubmit={handleResetSubmit} className="d-flex flex-column align-items-center">
-                            <div className="input-box">
-                                <input
-                                    type="text"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="Password"
-                                    required
-                                />
+            <div className="home-page">
+                <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
+                    <Container fluid>
+                        <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="ml-auto fw-normal custom-nav-links">
+                                <Nav.Link href="#events" className="me-2">Events</Nav.Link>
+                                <Nav.Link href="#live" className="me-2">Live</Nav.Link>
+                                <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
+                            </Nav>
+                            <div>
+                                <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
+                                <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">User Signup</Button>
+                                <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
                             </div>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+                <div className="container h-100 d-flex justify-content-center align-items-center">
+                    <div className="card text-black" style={{ borderRadius: "25px" }}>
+                        <div className="card-body p-md-5">
+                            <h2>Enter New Password</h2>
+                            <form onSubmit={handleResetSubmit} className="d-flex flex-column align-items-center">
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Password"
+                                        required
+                                    />
+                                </div>
 
-                            <div className="input-box">
-                                <input
-                                    type="text"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    placeholder="Confirm Password"
-                                    required
-                                />
-                            </div>
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        placeholder="Confirm Password"
+                                        required
+                                    />
+                                </div>
 
-                            <button type="submit" className="btn">Send Password Reset Email</button>
-                        </form>
+                                <button type="submit" className="btn">Send Password Reset Email</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
