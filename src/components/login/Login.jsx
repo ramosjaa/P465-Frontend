@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './Login.css'
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
 function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -71,24 +70,6 @@ function LoginForm() {
 
     return (
         <div className="home-page">
-            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
-                <Container fluid>
-                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto fw-normal custom-nav-links">
-                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
-                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
-                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
-                        </Nav>
-                        <div>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">User Signup</Button>
-                            <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
-                        </div>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
             <div className="container h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                     <div className="col-lg-10 col-xl-9">
