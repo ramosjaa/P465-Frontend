@@ -9,12 +9,14 @@
       name="description"
       content="Web site created using create-react-app"
     />
+    <meta name="google-signin-client_id" content="1007116342844-hbm6up78s4ooss7bk2eksthhqgn6hu4g.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <!-- Optionally, include Bootstrap JS and Popper.js for components that require JavaScript, before the closing body tag -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <script src="https://apis.google.com/js/api:client.js"></script>
+ 
     <style>
       .root{
         width:100%;
@@ -40,6 +42,8 @@
     <title>Log In - Rhythm Reserve</title>
   </head>
   <body>
+     <!-- google_auth bracnh change right here, script for google authentication-->
+     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -51,5 +55,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+      
   </body>
 </html>

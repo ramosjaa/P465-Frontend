@@ -6,6 +6,14 @@ import '../../App.css';
 import './Login.css'
 import { Link } from 'react-router-dom';
 
+function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  }
+
 function LoginForm() {
     const [loginData, setLoginData] = useState({
         email: '',
@@ -127,9 +135,9 @@ function LoginForm() {
                                             <div className="text-center">
                                                 <p>Don't have an account? <a href="/signup">Signup</a></p>
                                                 <p>Or continue with</p>
-                                                <button className="btn btn-lg btn-google me-2" onClick={() => console.log('Continue with Google')}>
-                                                    <i className="fab fa-google me-2"></i> Google
-                                                </button>
+                                                
+                                                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
                                                 <button className="btn btn-lg btn-facebook" onClick={() => console.log('Continue with Facebook')}>
                                                     <i className="fab fa-facebook me-2"></i> Facebook
                                                 </button>
