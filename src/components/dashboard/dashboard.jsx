@@ -16,11 +16,26 @@ const Dashboard = () => {
     };
 
     return (
-        <div className = "home-page">
+        <div className="home-page text-white fw-bold">
             <div className="dashboard">
-                <h1>Welcome to the Dashboard</h1>
-                <p>You are now logged in.</p>
-                <button onClick={handleLogout} className="btn btn-primary">Logout</button>
+                <h1>Welcome your dashboard!</h1>
+                <p>You are now logged in! See venues below!</p>
+                <button onClick={handleLogout} className="btn btn-primary position-absolute top-0 end-0 mt-3 me-3">Logout</button>
+
+                {/* Grid of cards */}
+                <div className="row mt-5">
+                    {[...Array(9)].map((_, index) => (
+                        <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div className="card">
+                                <img src="https://via.placeholder.com/300" className="card-img-top" alt="Placeholder" />
+                                <div className="card-body">
+                                    <h5 className="card-title">Venue</h5>
+                                    <p className="card-text">Click to see concerts</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
