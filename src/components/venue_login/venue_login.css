@@ -1,0 +1,13 @@
+.home-page {
+    background: url("../assets/concert.png") no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width:100%;
+}
+
+.container{
+    justify-content: center;
+    align-items: center;
+}

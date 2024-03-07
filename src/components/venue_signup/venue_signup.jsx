@@ -21,7 +21,7 @@ function VenueSignupForm() {
     const { isAuthenticated, login } = useContext(AuthContext); //user's login session
 
     useEffect(() => {
-        document.title = 'Sign Up | RhythmReserve';
+        document.title = 'Venue Sign Up | RhythmReserve';
     }, []);
 
     useEffect(() => {
@@ -44,35 +44,30 @@ function VenueSignupForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const payloadData = new FormData();
+        payloadData.append('venueName', formData.venueName);
+        payloadData.append('location', formData.location);
+        payloadData.append('email', formData.email);
+        payloadData.append('password', formData.password);
+        payloadData.append('image', selectedImage);
+
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
+
         if (!formData.agreeTerms) {
             alert("You must agree to the terms and conditions!");
             return;
         }
 
-        formData.image = URL.createObjectURL(selectedImage).toString();
-
-        const payload = {
-            venueName: formData.venueName,
-            image: formData.image,
-            location: formData.location,
-            email: formData.email,
-            password: formData.password,
-        };
-
         try {
-            const response = await fetch('http://localhost:8000/auth/vsignup/', {
+            const response = await fetch('http://localhost:8000/auth/venue_signup/', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
+                body: payloadData, // Send formData instead of JSON
             });
             
-            console.log(JSON.stringify(payload));
+            console.log(JSON.stringify(payloadData));
 
             const data = await response.json();
             if (response.ok) {
@@ -130,7 +125,6 @@ function VenueSignupForm() {
                                                         />
                                                         <br />
                                                         <button onClick={() => {
-                                                            //console.log("url: " + URL.createObjectURL(selectedImage).toString());
                                                             setSelectedImage(null);
                                                         }}>Remove</button>
                                                     </div>
@@ -260,7 +254,7 @@ function VenueSignupForm() {
                                                             <p>Already have an account?</p>
                                                         </div>
                                                         <div className="col-md-3">
-                                                            <a href="/login">Login</a>
+                                                            <a href="/vlogin">Login</a>
                                                         </div>
                                                     </div>
                                                 </div>
