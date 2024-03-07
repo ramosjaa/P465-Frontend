@@ -5,6 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './Login.css'
 import { Link } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+
+// google auth client id
+const clientId = '1007116342844-hbm6up78s4ooss7bk2eksthhqgn6hu4g.apps.googleusercontent.com';
+
+
 
 function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -69,6 +76,7 @@ function LoginForm() {
     };
 
     return (
+        <GoogleOAuthProvider clientId={clientId}>
         <div className="home-page">
             <div className="container h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
@@ -127,9 +135,15 @@ function LoginForm() {
                                             <div className="text-center">
                                                 <p>Don't have an account? <a href="/signup">Signup</a></p>
                                                 <p>Or continue with</p>
-                                                <button className="btn btn-lg btn-google me-2" onClick={() => console.log('Continue with Google')}>
-                                                    <i className="fab fa-google me-2"></i> Google
-                                                </button>
+                                                <GoogleLogin
+                                                    clientId={clientId}
+                                                    onSuccess={(credentialResponse) => {
+                                                        console.log('Google Sign-In Success:', credentialResponse);
+                                                      }}
+                                                      onError={(error) => {
+                                                        console.error('Google Sign-In Error:', error);
+                                                      }}
+                                                />
                                                 <button className="btn btn-lg btn-facebook" onClick={() => console.log('Continue with Facebook')}>
                                                     <i className="fab fa-facebook me-2"></i> Facebook
                                                 </button>
@@ -143,6 +157,7 @@ function LoginForm() {
                 </div>
             </div>
         </div>
+        </GoogleOAuthProvider>
     );
 }
 
