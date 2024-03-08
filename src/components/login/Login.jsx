@@ -14,6 +14,35 @@ const clientId = '1007116342844-hbm6up78s4ooss7bk2eksthhqgn6hu4g.apps.googleuser
 
 
 function LoginForm() {
+
+    //google authentication and sign in
+    const handleGoogleSignIn = async (credentialResponse) => {
+        try {
+          const response = await fetch('http://localhost:8000/auth/google-signin/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ credential: credentialResponse.credential }),
+          });
+    
+          const data = await response.json();
+          if (response.ok) {
+            console.log('Google Sign-In Success:', data);
+            // post-login logic
+            login(); // user logged in, update AuthContext
+            navigate('/dashboard'); // navigate to dashboard
+          } else {
+            console.error('Google Sign-In Error:', data.error);
+            alert('Google Sign-In Failed: ' + data.error);
+          }
+        } catch (error) {
+          console.error('Request Failed:', error);
+          alert('An error occurred. Please try again.');
+        }
+      };
+
+
     const [loginData, setLoginData] = useState({
         email: '',
         password: '',
@@ -136,13 +165,10 @@ function LoginForm() {
                                                 <p>Don't have an account? <a href="/signup">Signup</a></p>
                                                 <p>Or continue with</p>
                                                 <GoogleLogin
-                                                    clientId={clientId}
-                                                    onSuccess={(credentialResponse) => {
-                                                        console.log('Google Sign-In Success:', credentialResponse);
-                                                      }}
-                                                      onError={(error) => {
-                                                        console.error('Google Sign-In Error:', error);
-                                                      }}
+                                                    onSuccess={handleGoogleSignIn}
+                                                    onError={(error) => {
+                                                    console.error('Google Sign-In Error:', error);
+                                                    }}
                                                 />
                                                 <button className="btn btn-lg btn-facebook" onClick={() => console.log('Continue with Facebook')}>
                                                     <i className="fab fa-facebook me-2"></i> Facebook
