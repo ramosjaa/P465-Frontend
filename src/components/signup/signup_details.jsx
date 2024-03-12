@@ -26,6 +26,7 @@ function SignupDetails({ formData, setFormData, onNext, onPrevious }) {
   
       // Send the formData to your backend for user registration
       try {
+        console.log(formData)
         const response = await fetch('http://localhost:8000/auth/signup/', {
           method: 'POST',
           headers: {
@@ -47,6 +48,8 @@ function SignupDetails({ formData, setFormData, onNext, onPrevious }) {
         console.error('Request Failed:', error);
         alert('An error occurred. Please try again.');
       }
+
+      
     };
   
     return (
