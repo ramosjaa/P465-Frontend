@@ -1,4 +1,4 @@
-function SignupDetails({ formData, setFormData, onNext, onPrevious }) {
+function SignupDetails({ formData, setFormData, onNext, onPrevious, signUpOption }) {
     const handleChange = (e) => {
       const { name, value, type, checked } = e.target;
       setFormData((prevFormData) => ({
@@ -9,25 +9,35 @@ function SignupDetails({ formData, setFormData, onNext, onPrevious }) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
-      // Perform form validation
-      if ('' === formData.password) {
-        alert("Must add a password")
-        return;
-      }
-      if (formData.password !== formData.confirmPassword) {
-        alert("Passwords do not match!");
-        return;
-      }
       if (!formData.agreeTerms) {
         alert("You must agree to the terms and conditions!");
         return;
       }
   
+      // determine whicih sign up option the user chose and send to backend api depending on that
+      // if 'Google' send the form data via POST to http://localhost:8000/auth/google_signup/
+      //if 'Email' send the form data via POST to http://localhost:8000/auth/signup/
       // Send the formData to your backend for user registration
+      // finally, sign the user in and redirect them to the dashboard with ......
+      //   useEffect(() => {
+      //     // Redirect to dashboard if already logged in
+      //     if (isAuthenticated) {
+      //         navigate('/dashboard');
+      //     }
+      // }, [isAuthenticated, navigate]);
       try {
-        console.log(formData)
-        const response = await fetch('http://localhost:8000/auth/signup/', {
+        console.log(JSON.stringify(formData, null, 2));
+        console.log(signUpOption)
+        let url;
+        if (signUpOption === 'Google') {
+          url = 'http://localhost:8000/auth/google_signup/';
+        } else if (signUpOption === 'Email') {
+          url = 'http://localhost:8000/auth/signup/';
+        } else {
+          throw new Error('Invalid sign-up option');
+        }
+  
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -48,37 +58,25 @@ function SignupDetails({ formData, setFormData, onNext, onPrevious }) {
         console.error('Request Failed:', error);
         alert('An error occurred. Please try again.');
       }
-
+      // move the user to the login page to sign in with their newly created account!
+      onNext();
       
     };
   
     return (
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
+
+      <div className="form-group">
+          <label htmlFor="firstName">Username</label>
           <input
             type="text"
-            id="password"
-            name="password"
+            id="username"
+            name="username"
             className="form-control"
-            value={formData.password}
+            value={formData.username}
             onChange={handleChange}
             required
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            className="form-control"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Re-enter password"
-            required
-           />
         </div>
 
         <div className="form-group">

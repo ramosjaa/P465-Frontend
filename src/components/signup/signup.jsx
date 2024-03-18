@@ -20,6 +20,7 @@ function SignupForm() {
         confirmPassword: '',
         agreeTerms: false
     });
+    const [signUpOption, setSignUpOption] = useState('')
 
     // handling the state of form viewable for user
     const handleNext = () => {
@@ -33,9 +34,12 @@ function SignupForm() {
       const renderStep = () => {
         switch (step) {
           case 1:
-            return <SignupOptions onNext={handleNext} />;
+            return <SignupOptions formData={formData} setFormData={setFormData} onNext={handleNext} signupOption={signUpOption} setSignUpOption={setSignUpOption} />;
           case 2:
-            return <SignupDetails formData={formData} setFormData={setFormData} onNext={handleNext} onPrevious={handlePrevious} />;
+            return <SignupDetails formData={formData} setFormData={setFormData} onNext={handleNext} onPrevious={handlePrevious} signUpOption={signUpOption}/>;
+          case 3:
+            // move them to the login page
+            navigate('/login');
           default:
             return null;
         }

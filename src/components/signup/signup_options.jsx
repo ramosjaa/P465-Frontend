@@ -19,61 +19,123 @@ const clientId = '1007116342844-hbm6up78s4ooss7bk2eksthhqgn6hu4g.apps.googleuser
 //     spotifyUsername: formData.spotifyUsername
 // };
 
-function SignupOptions({ onNext }) {
+function SignupOptions({ formData, setFormData, onNext, signupOption, setSignUpOption}) {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+
   const handleEmailSignup = () => {
-    // store the email and password and have it saved and 
+    // set the sign up option to be "Email"
+    setSignUpOption("Email");
+    // Perform form validation
+    if ('' === formData.password) {
+      alert("Must add a password")
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
     onNext({ email, password });
   };
 
   const clickedGoogleSignUp = async (credentialResponse) => {
-    // store the users google email and eventually use the google sign up api for the backend
+    // Set the sign-up option to "Google"
+    setSignUpOption("Google");
+  
     try {
-        const response = await fetch('http://localhost:8000/auth/google-signup/', {
+      // Send the credential to your backend API
+      const response = await fetch('http://localhost:8000/auth/google_email/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ credential: credentialResponse.credential }),
       });
-      const data = await response.json();
+  
       if (response.ok) {
-        console.log('Google Sign-Up Success:', data);
-        // post-signup logic
-
-        
-
+        // Handle the response from your backend API
+        const data = await response.json();
+        const { email } = data;
+        console.log("email forom CLCIKC GOOG" + email)
+        // Set the email to the email found from the async variable
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          email,
+          password: 'None',
+        }));
+  
+        // Use the 'None' password to identify that a user used Google sign-up within our API
+        // Then use onNext to move forward in the sign-up process
+        onNext({ email, password: 'None' });
       } else {
-        console.error('Google Sign-Up Error:', data.error);
-        alert('Google Sign-Up Failed: ' + data.error);
+        // Handle error if the API request was unsuccessful
+        console.error('Google Sign-Up API Error:', response.statusText);
       }
     } catch (error) {
-      console.error('Request Failed:', error);
-      alert('An error occurred. Please try again.');
+      // Handle any network or other errors
+      console.error('Google Sign-Up Error:', error);
     }
   };
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
         <div>
+          <div className="form-group">
+            <label htmlFor="password">Email</label>
             <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+              type="text"
+              id="email"
+              name="email"
+              className="form-control"
+              value={formData.email}
+              onChange={handleChange}
+              required
             />
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-            />
+          </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="text"
+            id="password"
+            name="password"
+            className="form-control"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            className="form-control"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Re-enter password"
+            required
+           />
+        </div>
 
             <button className="btn btn-primary btn-lg mb-3" onClick={handleEmailSignup}>
                 Sign up with Email
             </button>
+
+            <h1> OR...</h1>
+            <h2>Sign up with Google</h2>
 
             <GoogleLogin
                     onSuccess={clickedGoogleSignUp}

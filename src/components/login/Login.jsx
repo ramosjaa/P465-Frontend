@@ -18,7 +18,7 @@ function LoginForm() {
     //google authentication and sign in
     const handleGoogleSignIn = async (credentialResponse) => {
     try {
-      const response = await fetch('http://localhost:8000/auth/google-signin/', {
+      const response = await fetch('http://localhost:8000/auth/google_signin/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
