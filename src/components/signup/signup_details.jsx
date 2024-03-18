@@ -54,8 +54,6 @@ function SignupDetails({ formData, setFormData, onNext, onPrevious }) {
   
     return (
       <form onSubmit={handleSubmit}>
-        {/* Render input fields for first name, last name, phone number, Spotify username */}
-
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
