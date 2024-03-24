@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import Search from '../search_events/search_events';
+
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -38,7 +40,7 @@ const Dashboard = () => {
                 <div className="dashboard">
                     <h1>Welcome your dashboard!</h1>
                     <p>You are now logged in! See venues below!</p>
-                    
+                    <Search />
 
                     {/* Grid of cards */}
                     <div className="row mt-5">
