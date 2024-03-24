@@ -23,7 +23,7 @@ function VenueLoginForm() {
     useEffect(() => {
         // Redirect to dashboard if already logged in
         if (isAuthenticated) {
-            navigate('/dashboard');
+            navigate('/vdashboard');
         }
     }, [isAuthenticated, navigate]);
 
