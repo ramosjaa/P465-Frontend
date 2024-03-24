@@ -16,34 +16,52 @@ import LandingPage from "./components/landingpage/landingpage";
 // auth context for user
 export const AuthContext = React.createContext({
   isAuthenticated: false,
+  user: null, // get user email, other details
   login: () => {},
   logout: () => {}
 });
 
 function App() {
-  // init isAuthenticated check from localStorage
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user'))); // Retrieve user data from localStorage
 
   useEffect(() => {
-    // check for auth state in localStorage
+    // check for auth state and user data in localStorage
     const token = localStorage.getItem('authToken');
+    const userData = localStorage.getItem('user');
+
     if (token) {
       setIsAuthenticated(true);
     }
+    
+    if (userData) {
+      setUser(JSON.parse(userData)); // Assume userData is stored as a JSON string
+    }
   }, []);
+  
 
-  // memoize, prevent unnecessary rendering.
+  const login = (userData) => { // `userData` should contain email and any other user info
+    setIsAuthenticated(true);
+    console.log(userData);
+    setUser(userData); // Set user data in state
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('user', JSON.stringify(userData)); // Store user data in localStorage
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUser(null); // Clear user data from state
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('user'); // Clear user data from localStorage
+  };
+
+  // Include `user` in the context value
   const authContextValue = useMemo(() => ({
     isAuthenticated,
-    login: () => {
-      setIsAuthenticated(true);
-      localStorage.setItem('isAuthenticated', 'true'); // save state to localStorage
-    },
-    logout: () => {
-      setIsAuthenticated(false);
-      localStorage.removeItem('isAuthenticated'); // clear state from localStorage
-    }
-  }), [isAuthenticated]);
+    user, // Provide user data through context
+    login,
+    logout
+  }), [isAuthenticated, user]);
 
   // route protection
   const ProtectedRoute = ({ children }) => {
