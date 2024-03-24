@@ -7,6 +7,7 @@ import VenueSignup from './components/venue_signup/venue_signup';
 import VenueLogin from './components/venue_login/venue_login';
 import Login from './components/login/Login';
 import Dashboard from './components/dashboard/dashboard';
+import VenueDashboard from './components/venue_dashboard/venue_dashboard';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminDashRedirect from './components/admindashredirect/AdminDashRedirect';
@@ -72,6 +73,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/vdashboard" 
+            element={
+              <ProtectedRoute>
+                <VenueDashboard />
               </ProtectedRoute>
             } 
           />

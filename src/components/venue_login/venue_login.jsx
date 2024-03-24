@@ -4,6 +4,7 @@ import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './venue_login.css';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { GoogleLogin } from "@react-oauth/google";
 
 function VenueLoginForm() {
@@ -46,7 +47,7 @@ function VenueLoginForm() {
                 method: 'POST',
                 body: payloadData
             });
-            
+
             console.log(JSON.stringify(payloadData));
 
             const data = await response.json();
@@ -54,7 +55,7 @@ function VenueLoginForm() {
                 console.log('Login Success:', data);
                 //post-signup logic
                 login() //user logged in, update AuthContext
-                navigate('/dashboard') //navigate to dashboard
+                navigate('/vdashboard') //navigate to dashboard
             } else {
                 console.error('Login Error:', data.error);
                 alert('Login Failed: ' + data.error);
@@ -82,90 +83,98 @@ function VenueLoginForm() {
 
 
     return (
-        <div className="home-page">
-            <section className="container-lg min-vh-100">
-                <div className="container h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col-lg-10 col-xl-9">
-                            <div className="card text-black" style={{ borderRadius: "25px" }}>
-                                <div className="card-body p-md-5">
-                                    <div className="row justify-content-center">
-                                        <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+        <div>
+            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
+                <Container fluid>
+                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ml-auto fw-normal custom-nav-links">
+                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
+                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
+                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
+                        </Nav>
+                        <div>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">User Login</Button>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/vlogin">Venue Login</Button>
+                        </div>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <div className="home-page">
+                <section className="container-lg min-vh-100">
+                    <div className="container h-100">
+                        <div className="row d-flex justify-content-center align-items-center h-100">
+                            <div className="col-lg-10 col-xl-9">
+                                <div className="card text-black" style={{ borderRadius: "25px" }}>
+                                    <div className="card-body p-md-5">
+                                        <div className="row justify-content-center">
+                                            <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                            <p className="text-center h3 flex-row fw-bold mb-4 mx-1 mx-md-4 mt-4">Login to your Venue Account</p>
+                                                <p className="text-center h3 flex-row fw-bold mb-4 mx-1 mx-md-4 mt-4">Login to Your Venue Account</p>
 
-                                            <form className='row d-flex' onSubmit={handleSubmit}>
+                                                <form className='row d-flex' onSubmit={handleSubmit}>
 
-                                                <div className="d-flex flex-row align-items-center mb-3">
-                                                    <div className="form-outline flex-fill mb-0">
-                                                        <label htmlFor="Email" className="form-label">Email</label>
-                                                        <input
-                                                            type="email"
-                                                            id="email"
-                                                            name="email"
-                                                            className="form-control"
-                                                            value={formData.email}
-                                                            onChange={handleChange}
-                                                            placeholder="Email"
-                                                            required
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <div className="d-flex flex-row align-items-center mb-3">
-                                                    <div className="form-outline flex-fill mb-0">
-                                                        <label htmlFor="Password"
-                                                            className="form-label">Password</label>
-                                                        <input
-                                                            type="password"
-                                                            id="password"
-                                                            name="password"
-                                                            className="form-control"
-                                                            value={formData.password}
-                                                            onChange={handleChange}
-                                                            placeholder="Password"
-                                                            required
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-3">
-                                                    <button className="btn btn-primary btn-lg" type="submit"
-                                                        onClick={() => console.log('Form Submitted', formData)}>Login
-                                                    </button>
-                                                </div>
-
-                                                <div className="container">
-                                                    <div className="row d-flex">
-                                                        <div className="col-md-8">
-                                                            <p>Don't have an account?</p>
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <a href="/vsignup">Signup</a>
+                                                    <div className="d-flex flex-row align-items-center mb-3">
+                                                        <div className="form-outline flex-fill mb-0">
+                                                            <label htmlFor="Email" className="form-label">Email</label>
+                                                            <input
+                                                                type="email"
+                                                                id="email"
+                                                                name="email"
+                                                                className="form-control"
+                                                                value={formData.email}
+                                                                onChange={handleChange}
+                                                                placeholder="Email"
+                                                                required
+                                                            />
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <p className="text-center mb-2">Or continue with</p>
-                                                <div className="d-flex justify-content-center">
-                                                    <button className="btn btn-lg btn-google me-2"
-                                                        onClick={googleLogin}>
-                                                        <i className="fab fa-google me-2"></i> Google
-                                                    </button>
-                                                    <button className="btn btn-lg btn-facebook"
-                                                        onClick={() => console.log('Continue with Facebook')}>
-                                                        <i className="fab fa-facebook me-2"></i> Facebook
-                                                    </button>
-                                                </div>
-                                            </form>
+
+                                                    <div className="d-flex flex-row align-items-center mb-3">
+                                                        <div className="form-outline flex-fill mb-0">
+                                                            <label htmlFor="Password"
+                                                                className="form-label">Password</label>
+                                                            <input
+                                                                type="password"
+                                                                id="password"
+                                                                name="password"
+                                                                className="form-control"
+                                                                value={formData.password}
+                                                                onChange={handleChange}
+                                                                placeholder="Password"
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-3">
+                                                        <button className="btn btn-primary btn-lg" type="submit"
+                                                            onClick={() => console.log('Form Submitted', formData)}>Login
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="container">
+                                                        <div className="row d-flex">
+                                                            <div className="col-md-8">
+                                                                <p>Don't have an account?</p>
+                                                            </div>
+                                                            <div className="col-md-3">
+                                                                <a href="/vsignup">Signup</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>                                                   
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-        // </section>
+                </section>
+            </div>
         </div>
     );
 }

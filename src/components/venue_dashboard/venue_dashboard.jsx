@@ -1,14 +1,16 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../App.css';
+import { Navbar, Nav, Container, Button, Footer} from 'react-bootstrap';
 
-const Dashboard = () => {
+const VenueDashboard = () => {
     const navigate = useNavigate();
     const { logout } = useContext(AuthContext);
 
     useEffect(() => {
-        document.title = 'Dashboard | RhythmReserve';
+        document.title = 'Venue Dashboard | RhythmReserve';
     }, []);
 
     const handleLogout = () => {
@@ -37,18 +39,25 @@ const Dashboard = () => {
             <div className="home-page text-white fw-bold">
                 <div className="dashboard">
                     <h1>Welcome your dashboard!</h1>
-                    <p>You are now logged in! See venues below!</p>
-                    
+                    <p>You are now logged in! See events below!</p>
+                    <button onClick={handleLogout} className="btn btn-primary position-absolute top-0 end-0 mt-3 me-3">Logout</button>
 
-                    {/* Grid of cards */}
+                    <button className="btn btn-primary">Create Event</button>
+                    {/* 
+                    As we flesh out the event app in the backend, this should eventually 
+                    get the number of events that include this venue as the venue name and make the cards that way. 
+                    This is placeholder for now.
+                */}
                     <div className="row mt-5">
                         {[...Array(9)].map((_, index) => (
                             <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
                                 <div className="card">
                                     <img src="https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1682714955/brooksschoolorg/aucb7xbkp18dwu78z7mw/cabaret23-thumb.jpg" className="card-img-top" alt="Placeholder" />
                                     <div className="card-body">
-                                        <h5 className="card-title">Venue</h5>
-                                        <p className="card-text">Click to see concerts</p>
+                                        <h5 className="card-title">Event</h5>
+                                        <button className="btn btn-primary">Edit</button>
+
+                                        <button className="btn btn-primary">Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -56,8 +65,9 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+            
         </div>
     );
 };
 
-export default Dashboard;
+export default VenueDashboard;

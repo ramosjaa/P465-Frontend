@@ -4,6 +4,7 @@ import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './Login.css'
+import {Navbar, Nav, Container, Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
@@ -17,30 +18,30 @@ function LoginForm() {
 
     //google authentication and sign in
     const handleGoogleSignIn = async (credentialResponse) => {
-    try {
-      const response = await fetch('http://localhost:8000/auth/google_signin/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ credential: credentialResponse.credential }),
-      });
+        try {
+            const response = await fetch('http://localhost:8000/auth/google_signin/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ credential: credentialResponse.credential }),
+            });
 
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Google Sign-In Success:', data);
-        // post-login logic
-        login(); // user logged in, update AuthContext
-        navigate('/dashboard'); // navigate to dashboard
-      } else {
-        console.error('Google Sign-In Error:', data.error);
-        alert('Google Sign-In Failed: ' + data.error);
-      }
-    } catch (error) {
-      console.error('Request Failed:', error);
-      alert('An error occurred. Please try again.');
-    }
-  };
+            const data = await response.json();
+            if (response.ok) {
+                console.log('Google Sign-In Success:', data);
+                // post-login logic
+                login(); // user logged in, update AuthContext
+                navigate('/dashboard'); // navigate to dashboard
+            } else {
+                console.error('Google Sign-In Error:', data.error);
+                alert('Google Sign-In Failed: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Request Failed:', error);
+            alert('An error occurred. Please try again.');
+        }
+    };
 
 
     const [loginData, setLoginData] = useState({
@@ -106,75 +107,93 @@ function LoginForm() {
 
     return (
         <GoogleOAuthProvider clientId={clientId}>
-        <div className="home-page">
-            <div className="container h-100">
-                <div className="row d-flex justify-content-center align-items-center h-100">
-                    <div className="col-lg-10 col-xl-9">
-                        <div className="card text-black" style={{ borderRadius: "25px" }}>
-                            <div className="card-body p-md-5">
-                                <div className="row justify-content-center">
-                                    <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
+                <Container fluid>
+                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ml-auto fw-normal custom-nav-links">
+                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
+                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
+                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
+                        </Nav>
+                        <div>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">User Login</Button>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/vlogin">Venue Login</Button>
+                        </div>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <div className="home-page">
+                <div className="container h-100">
+                    <div className="row d-flex justify-content-center align-items-center h-100">
+                        <div className="col-lg-10 col-xl-9">
+                            <div className="card text-black" style={{ borderRadius: "25px" }}>
+                                <div className="card-body p-md-5">
+                                    <div className="row justify-content-center">
+                                        <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                        <p className="text-center h3 fw-bold mb-4 mx-1 mx-md-4 mt-4">Login to Your Account</p>
+                                            <p className="text-center h3 fw-bold mb-4 mx-1 mx-md-4 mt-4">Login to Your Account</p>
 
-                                        <form className='row d-flex' onSubmit={handleSubmit}>
-                                            <div className="d-flex flex-row align-items-center mb-4">
-                                                <div className="form-outline flex-fill mb-0">
-                                                    <label htmlFor="Email" className="form-label">Email</label>
-                                                    <input
-                                                        type="email"
-                                                        id="email"
-                                                        name="email"
-                                                        className="form-control"
-                                                        value={loginData.email}
-                                                        onChange={handleChange}
-                                                        placeholder="Email"
-                                                        required
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="d-flex flex-row align-items-center mb-4">
-                                                <div className="form-outline flex-fill mb-0">
-                                                    <label htmlFor="Password" className="form-label">Password</label>
-                                                    <input
-                                                        type="password"
-                                                        id="password"
-                                                        name="password"
-                                                        className="form-control"
-                                                        value={loginData.password}
-                                                        onChange={handleChange}
-                                                        placeholder="Password"
-                                                        required
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="d-flex justify-content-center mx-5 mb-3 mb-lg-4">
-                                                <button className="btn btn-primary btn-lg" type="submit">Login</button>
-
-                                                <div className="container">
-                                                    <div className="row d-flex">
-                                                        <Link to="/password-reset">Forgot password?</Link>
+                                            <form className='row d-flex' onSubmit={handleSubmit}>
+                                                <div className="d-flex flex-row align-items-center mb-4">
+                                                    <div className="form-outline flex-fill mb-0">
+                                                        <label htmlFor="Email" className="form-label">Email</label>
+                                                        <input
+                                                            type="email"
+                                                            id="email"
+                                                            name="email"
+                                                            className="form-control"
+                                                            value={loginData.email}
+                                                            onChange={handleChange}
+                                                            placeholder="Email"
+                                                            required
+                                                        />
                                                     </div>
                                                 </div>
 
-                                            </div>
+                                                <div className="d-flex flex-row align-items-center mb-4">
+                                                    <div className="form-outline flex-fill mb-0">
+                                                        <label htmlFor="Password" className="form-label">Password</label>
+                                                        <input
+                                                            type="password"
+                                                            id="password"
+                                                            name="password"
+                                                            className="form-control"
+                                                            value={loginData.password}
+                                                            onChange={handleChange}
+                                                            placeholder="Password"
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
 
-                                            <div className="text-center">
-                                                <p>Don't have an account? <a href="/signup">Signup</a></p>
-                                                <p>Or continue with</p>
-                                                <GoogleLogin
-                                                    onSuccess={handleGoogleSignIn}
-                                                    onError={(error) => {
-                                                    console.error('Google Sign-In Error:', error);
-                                                    }}
-                                                />
-                                                <button className="btn btn-lg btn-facebook" onClick={() => console.log('Continue with Facebook')}>
-                                                    <i className="fab fa-facebook me-2"></i> Facebook
-                                                </button>
-                                            </div>
-                                        </form>
+                                                <div className="d-flex justify-content-center mx-5 mb-3 mb-lg-4">
+                                                    <button className="btn btn-primary btn-lg" type="submit">Login</button>
+
+                                                    <div className="container">
+                                                        <div className="row d-flex">
+                                                            <Link to="/password-reset">Forgot password?</Link>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="text-center">
+                                                    <p>Don't have an account? <a href="/signup">Signup</a></p>
+                                                    <p>Or continue with</p>
+                                                    <GoogleLogin
+                                                        onSuccess={handleGoogleSignIn}
+                                                        onError={(error) => {
+                                                            console.error('Google Sign-In Error:', error);
+                                                        }}
+                                                    />
+                                                    <button className="btn btn-lg btn-facebook" onClick={() => console.log('Continue with Facebook')}>
+                                                        <i className="fab fa-facebook me-2"></i> Facebook
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +201,6 @@ function LoginForm() {
                     </div>
                 </div>
             </div>
-        </div>
         </GoogleOAuthProvider>
     );
 }

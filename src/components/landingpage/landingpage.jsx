@@ -19,9 +19,8 @@ const LandingPage = () => {
                             <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
                         </Nav>
                         <div>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">Login</Button>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/signup">User Signup</Button>
-                            <Button className="btn-styles me-5" variant="primary" size="sm" href="/vsignup">Venue Signup</Button>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">User Login</Button>
+                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/vlogin">Venue Login</Button>
                         </div>
                     </Navbar.Collapse>
                 </Container>
@@ -32,7 +31,6 @@ const LandingPage = () => {
                     <h1 className="display-1">Heaven of Music</h1>
                     <p className="lead">Jakarta - August 11 - 12 - 13, 2023</p>
                     <Button className="btn-styles" variant="primary" size="lg">  Buy Ticket → </Button>
-
                 </div>
             </Container>
         </div>
