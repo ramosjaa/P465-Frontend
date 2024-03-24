@@ -40,8 +40,7 @@ const VenueDashboard = () => {
                 <div className="dashboard">
                     <h1>Welcome your dashboard!</h1>
                     <p>You are now logged in! See events below!</p>
-                    <button onClick={handleLogout} className="btn btn-primary position-absolute top-0 end-0 mt-3 me-3">Logout</button>
-
+                    
                     <button className="btn btn-primary">Create Event</button>
                     {/* 
                     As we flesh out the event app in the backend, this should eventually 
