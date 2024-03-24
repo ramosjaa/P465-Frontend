@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-import { Navbar, Nav, Container, Button, Footer} from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
 const VenueDashboard = () => {
     const navigate = useNavigate();
