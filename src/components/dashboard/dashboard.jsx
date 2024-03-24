@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import Search from '../search_events/search_events';
+
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -53,15 +56,26 @@ const Dashboard = () => {
     const toggleUserInfo = () => setShowUserInfo(!showUserInfo);
 
     return (
-        <div className="home-page text-white fw-bold" style={{ position: 'relative', zIndex: 1 }}>
-            <div className="dashboard">
-                <h1>Welcome to your dashboard!</h1>
-                <p>You are now logged in! See venues below!</p>
-                <button onClick={toggleUserInfo} className="btn btn-secondary position-absolute top-0 end-0 mt-3 me-5" style={{ zIndex: 1050 }}>
-                    <i className="fas fa-user"></i> {/* User icon */}
-                </button>
-                {showUserInfo && userData && (
-                <div className="user-info-popup position-absolute top-0 end-0 mt-5 me-5 p-3 bg-white text-dark rounded" style={{ zIndex: 1051, right: '50px', boxShadow: '0 4px 6px rgba(0,0,0,.1)' }}>
+        <div>
+            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
+                <Container fluid>
+                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ml-auto fw-normal custom-nav-links">
+                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
+                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
+                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
+                            <Button onClick={toggleUserInfo} className="btn-secondary ms-2">
+                                <i className="fas fa-user"></i> {/* User icon */}
+                            </Button>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            {/* User info popup logic here, positioned relative to the entire page or Navbar */}
+            {showUserInfo && userData && (
+                <div className="user-info-popup position-fixed top-0 end-0 mt-5 me-5 p-3 bg-white text-dark rounded" style={{ zIndex: 1051, right: '15px', top: '56px', boxShadow: '0 4px 6px rgba(0,0,0,.1)' }}>
                     <h5>User Info</h5>
                     <p>Name: {userData.firstName} {userData.lastName}</p>
                     <p>Username: {userData.username}</p>
@@ -71,6 +85,11 @@ const Dashboard = () => {
                     <button onClick={handleLogout} className="btn btn-primary">Logout</button>
                 </div>
             )}
+            <div className="home-page text-white fw-bold">
+                <div className="dashboard">
+                    <h1>Welcome your dashboard!</h1>
+                    <p>You are now logged in! See venues below!</p>
+                    <Search />
 
                 {/* Grid of cards */}
                 <div className="row mt-5">
@@ -87,6 +106,7 @@ const Dashboard = () => {
                     ))}
                 </div>
             </div>
+        </div>
         </div>
     );
 };
