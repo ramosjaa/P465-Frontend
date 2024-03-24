@@ -15,7 +15,7 @@ const VenueDashboard = () => {
 
     const handleLogout = () => {
         logout(); // update 
-        navigate('/login'); // redirect to login page afterwards
+        navigate('/vlogin'); // redirect to login page afterwards
     };
 
     return (
