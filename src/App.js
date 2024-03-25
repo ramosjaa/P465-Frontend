@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import PasswordResetForm from './components/password_reset/PasswordResetForm';
 import SignupForm from './components/signup/signup';
 import VenueSignup from './components/venue_signup/venue_signup';
@@ -11,104 +11,113 @@ import VenueDashboard from './components/venue_dashboard/venue_dashboard';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminDashRedirect from './components/admindashredirect/AdminDashRedirect';
-import LandingPage from "./components/landingpage/landingpage";
-
+import LandingPage from './components/landingpage/landingpage';
+import Footer from './components/Footer/Footer.jsx';
 
 // auth context for user
 export const AuthContext = React.createContext({
-  isAuthenticated: false,
-  user: null, // get user email, other details
-  login: () => {},
-  logout: () => {}
+    isAuthenticated: false,
+    user: null, // get user email, other details
+    login: () => {},
+    logout: () => {},
 });
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user'))); // Retrieve user data from localStorage
+    const [isAuthenticated, setIsAuthenticated] = useState(
+        localStorage.getItem('isAuthenticated') === 'true'
+    );
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user'))); // Retrieve user data from localStorage
 
-  useEffect(() => {
-    // check for auth state and user data in localStorage
-    const token = localStorage.getItem('authToken');
-    const userData = localStorage.getItem('user');
+    useEffect(() => {
+        // check for auth state and user data in localStorage
+        const token = localStorage.getItem('authToken');
+        const userData = localStorage.getItem('user');
 
-    if (token) {
-      setIsAuthenticated(true);
-    }
-    
-    if (userData) {
-      setUser(JSON.parse(userData)); // Assume userData is stored as a JSON string
-    }
-  }, []);
-  
+        if (token) {
+            setIsAuthenticated(true);
+        }
 
-  const login = (userData) => { // `userData` should contain email and any other user info
-    setIsAuthenticated(true);
-    console.log(userData);
-    setUser(userData); // Set user data in state
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('user', JSON.stringify(userData)); // Store user data in localStorage
-  };
+        if (userData) {
+            setUser(JSON.parse(userData)); // Assume userData is stored as a JSON string
+        }
+    }, []);
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUser(null); // Clear user data from state
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('user'); // Clear user data from localStorage
-  };
+    const login = (userData) => {
+        // `userData` should contain email and any other user info
+        setIsAuthenticated(true);
+        console.log(userData);
+        setUser(userData); // Set user data in state
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify(userData)); // Store user data in localStorage
+    };
 
-  // Include `user` in the context value
-  const authContextValue = useMemo(() => ({
-    isAuthenticated,
-    user, // Provide user data through context
-    login,
-    logout
-  }), [isAuthenticated, user]);
+    const logout = () => {
+        setIsAuthenticated(false);
+        setUser(null); // Clear user data from state
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('user'); // Clear user data from localStorage
+    };
 
-  // route protection
-  const ProtectedRoute = ({ children }) => {
-    if (!isAuthenticated) {
-      // redirect to login page if not logged in.
-      return <Navigate to="/login" />;
-    }
+    // Include `user` in the context value
+    const authContextValue = useMemo(
+        () => ({
+            isAuthenticated,
+            user, // Provide user data through context
+            login,
+            logout,
+        }),
+        [isAuthenticated, user]
+    );
 
-    return children;
-  };
+    // route protection
+    const ProtectedRoute = ({ children }) => {
+        if (!isAuthenticated) {
+            // redirect to login page if not logged in.
+            return <Navigate to='/login' />;
+        }
 
-  // adding paths
-  return (
-    <AuthContext.Provider value={authContextValue}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/home" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignupForm />} />
-          <Route path="/vsignup" element={<VenueSignup />}/>
-          <Route path="/vlogin" element={<VenueLogin />}/>
-          <Route path="/admin-dash" element={<AdminDashRedirect />} />
-          <Route path="/password-reset" element={<PasswordResetForm />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/vdashboard" 
-            element={
-              <ProtectedRoute>
-                <VenueDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route path="/admin" element={<AdminDashRedirect />} />
-          {/* redirect to login if no other routes matched (can update to splash maybe?) */}
-          <Route path="*" element={<Navigate to="/home" />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthContext.Provider>
-  );
+        return children;
+    };
+
+    // adding paths
+    return (
+        <AuthContext.Provider value={authContextValue}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/home' element={<LandingPage />} />
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/signup' element={<SignupForm />} />
+                    <Route path='/vsignup' element={<VenueSignup />} />
+                    <Route path='/vlogin' element={<VenueLogin />} />
+                    <Route path='/admin-dash' element={<AdminDashRedirect />} />
+                    <Route
+                        path='/password-reset'
+                        element={<PasswordResetForm />}
+                    />
+                    <Route
+                        path='/dashboard'
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path='/vdashboard'
+                        element={
+                            <ProtectedRoute>
+                                <VenueDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path='/admin' element={<AdminDashRedirect />} />
+                    {/* redirect to login if no other routes matched (can update to splash maybe?) */}
+                    <Route path='*' element={<Navigate to='/home' />} />
+                </Routes>
+                <Footer />
+            </BrowserRouter>
+        </AuthContext.Provider>
+    );
 }
 
 export default App;
