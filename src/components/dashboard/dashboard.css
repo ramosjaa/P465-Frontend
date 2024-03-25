@@ -6,3 +6,20 @@
     flex-direction: column;
     width:100%;
 }
+
+.dashboard {
+    position: relative; /* This makes it the positioning context for the popup */
+    overflow: visible; /* Ensures overflow content can be shown */
+}
+
+
+.user-info-popup {
+    position: absolute;
+    top: 50px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    z-index: 1050; /* Higher than the grid/cards */
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}

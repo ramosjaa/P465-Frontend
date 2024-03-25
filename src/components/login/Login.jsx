@@ -27,21 +27,34 @@ function LoginForm() {
                 body: JSON.stringify({ credential: credentialResponse.credential }),
             });
 
-            const data = await response.json();
-            if (response.ok) {
-                console.log('Google Sign-In Success:', data);
-                // post-login logic
-                login(); // user logged in, update AuthContext
-                navigate('/dashboard'); // navigate to dashboard
-            } else {
-                console.error('Google Sign-In Error:', data.error);
-                alert('Google Sign-In Failed: ' + data.error);
-            }
-        } catch (error) {
-            console.error('Request Failed:', error);
-            alert('An error occurred. Please try again.');
-        }
-    };
+      if (response.ok) {
+
+        const response = await fetch('http://localhost:8000/auth/google_email/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ credential: credentialResponse.credential }),
+        });
+
+
+        const data = await response.json();
+        const { email } = data;
+        console.log('Login Success:', data);
+
+        
+        const userData = {
+          email: email
+        };
+
+        login(userData); // pass userData into login
+        navigate('/dashboard'); // navigate to dashboard
+      }
+    } catch (error) {
+      console.error('Request Failed:', error);
+      alert('An error occurred. Please try again.');
+    }
+  };
 
 
     const [loginData, setLoginData] = useState({
@@ -92,8 +105,13 @@ function LoginForm() {
             const data = await response.json();
             if (response.ok) {
                 console.log('Login Success:', data);
+
+                const userData = {
+                    email: loginData.email
+                  };
+
                 //post-login logic
-                login() //user logged in, update AuthContext
+                login(userData) //user logged in, update AuthContext
                 navigate('/dashboard') //navigate to dashboard
             } else {
                 console.error('Login Error:', data.error);
