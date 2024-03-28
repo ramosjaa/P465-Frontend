@@ -12,26 +12,27 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminDashRedirect from './components/admindashredirect/AdminDashRedirect';
 import LandingPage from './components/landingpage/landingpage';
+import CustomNavbar from './components/navbar/Navbar';
 import Footer from './components/Footer/Footer.jsx';
 
 // auth context for user
 export const AuthContext = React.createContext({
     isAuthenticated: false,
     user: null, // get user email, other details
-    login: () => {},
-    logout: () => {},
+    login: () => { },
+    logout: () => { },
 });
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(
-        localStorage.getItem('isAuthenticated') === 'true'
+        sessionStorage.getItem('isAuthenticated') === 'true'
     );
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user'))); // Retrieve user data from localStorage
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user'))); // Retrieve user data from session storage
 
     useEffect(() => {
         // check for auth state and user data in localStorage
-        const token = localStorage.getItem('authToken');
-        const userData = localStorage.getItem('user');
+        const token = sessionStorage.getItem('authToken');
+        const userData = sessionStorage.getItem('user');
 
         if (token) {
             setIsAuthenticated(true);
@@ -47,15 +48,15 @@ function App() {
         setIsAuthenticated(true);
         console.log(userData);
         setUser(userData); // Set user data in state
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify(userData)); // Store user data in localStorage
+        sessionStorage.setItem('isAuthenticated', 'true');
+        sessionStorage.setItem('user', JSON.stringify(userData)); // Store user data in localStorage
     };
 
     const logout = () => {
         setIsAuthenticated(false);
         setUser(null); // Clear user data from state
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('user'); // Clear user data from localStorage
+        sessionStorage.removeItem('isAuthenticated');
+        sessionStorage.removeItem('user'); // Clear user data from localStorage
     };
 
     // Include `user` in the context value
@@ -70,19 +71,50 @@ function App() {
     );
 
     // route protection
-    const ProtectedRoute = ({ children }) => {
-        if (!isAuthenticated) {
-            // redirect to login page if not logged in.
-            return <Navigate to='/login' />;
+    // function ProtectedRoute({children}) {
+    //     const user = JSON.parse(sessionStorage.getItem('user'));
+    //     const type = user?.type;
+
+    //     console.log("type: " + type);
+
+    //     if (!isAuthenticated) {
+    //         // redirect to login page if not logged in.
+    //         console.log("Access denied");
+    //         return <Navigate to='/home' />;
+    //     }
+
+    //     return children;
+    // };
+
+    function UProtectedRoute({ children }) {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        const type = user?.type;
+
+        if (!isAuthenticated || type != 1) {
+            console.log("Access denied");
+            return <Navigate to="/home" />;
         }
 
         return children;
-    };
+    }
+
+    function VProtectedRoute({ children }) {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        const type = user?.type;
+
+        if (!isAuthenticated || type != 2) {
+            console.log("Access denied");
+            return <Navigate to="/home" />;
+        }
+
+        return children;
+    }
 
     // adding paths
     return (
         <AuthContext.Provider value={authContextValue}>
             <BrowserRouter>
+                <CustomNavbar/>
                 <Routes>
                     <Route path='/home' element={<LandingPage />} />
                     <Route path='/login' element={<Login />} />
@@ -90,24 +122,21 @@ function App() {
                     <Route path='/vsignup' element={<VenueSignup />} />
                     <Route path='/vlogin' element={<VenueLogin />} />
                     <Route path='/admin-dash' element={<AdminDashRedirect />} />
-                    <Route
-                        path='/password-reset'
-                        element={<PasswordResetForm />}
-                    />
+                    <Route path='/password-reset' element={<PasswordResetForm />} />
                     <Route
                         path='/dashboard'
                         element={
-                            <ProtectedRoute>
+                            <UProtectedRoute>
                                 <Dashboard />
-                            </ProtectedRoute>
+                            </UProtectedRoute>
                         }
                     />
                     <Route
                         path='/vdashboard'
                         element={
-                            <ProtectedRoute>
+                            <VProtectedRoute >
                                 <VenueDashboard />
-                            </ProtectedRoute>
+                            </VProtectedRoute>
                         }
                     />
                     <Route path='/admin' element={<AdminDashRedirect />} />

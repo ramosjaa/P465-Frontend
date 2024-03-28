@@ -4,8 +4,7 @@ import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './venue_login.css';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { GoogleLogin } from "@react-oauth/google";
+import { Container, Button } from 'react-bootstrap';
 
 function VenueLoginForm() {
     const [formData, setFormData] = useState({
@@ -24,7 +23,7 @@ function VenueLoginForm() {
         // Redirect to dashboard if already logged in
         if (isAuthenticated) {
             navigate('/vdashboard');
-        }
+        } 
     }, [isAuthenticated, navigate]);
 
     const handleChange = (e) => {
@@ -51,10 +50,18 @@ function VenueLoginForm() {
             console.log(JSON.stringify(payloadData));
 
             const data = await response.json();
+            const email = data;
+            const type = 2;
+
+            const userData = {
+                email: email,
+                type: type
+            };
+
             if (response.ok) {
                 console.log('Login Success:', data);
                 //post-signup logic
-                login() //user logged in, update AuthContext
+                login(userData) //user logged in, update AuthContext
                 navigate('/vdashboard') //navigate to dashboard
             } else {
                 console.error('Login Error:', data.error);
@@ -66,41 +73,8 @@ function VenueLoginForm() {
         }
     };
 
-    const googleLogin = GoogleLogin({
-        onSuccess: async (codeResponse) => {
-            console.log(codeResponse);
-
-            // Extract the code from the response
-            const authCode = codeResponse.code;
-
-        },
-        onError: (error) => {
-            console.error('Google login error:', error);
-        },
-        flow: 'auth-code',
-    }
-    );
-
-
     return (
         <div>
-            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
-                <Container fluid>
-                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto fw-normal custom-nav-links">
-                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
-                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
-                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
-                        </Nav>
-                        <div>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">User Login</Button>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/vlogin">Venue Login</Button>
-                        </div>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
             <div className="home-page">
                 <section className="container-lg min-vh-100">
                     <div className="container h-100">

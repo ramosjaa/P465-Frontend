@@ -4,15 +4,13 @@ import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './Login.css'
-import {Navbar, Nav, Container, Button} from 'react-bootstrap';
+import {Container, Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
 
 // google auth client id
 const clientId = '1007116342844-hbm6up78s4ooss7bk2eksthhqgn6hu4g.apps.googleusercontent.com';
-
-
 
 function LoginForm() {
 
@@ -40,11 +38,12 @@ function LoginForm() {
 
         const data = await response.json();
         const { email } = data;
+        const { type } = 1;
         console.log('Login Success:', data);
-
         
         const userData = {
-          email: email
+          email: email,
+          type: type
         };
 
         login(userData); // pass userData into login
@@ -107,8 +106,9 @@ function LoginForm() {
                 console.log('Login Success:', data);
 
                 const userData = {
-                    email: loginData.email
-                  };
+                    email: loginData.email,
+                    type: 1
+                };
 
                 //post-login logic
                 login(userData) //user logged in, update AuthContext
@@ -125,23 +125,6 @@ function LoginForm() {
 
     return (
         <GoogleOAuthProvider clientId={clientId}>
-            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
-                <Container fluid>
-                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto fw-normal custom-nav-links">
-                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
-                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
-                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
-                        </Nav>
-                        <div>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/login">User Login</Button>
-                            <Button className="btn-styles me-2" variant="primary" size="sm" href="/vlogin">Venue Login</Button>
-                        </div>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
             <div className="home-page">
                 <div className="container h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">

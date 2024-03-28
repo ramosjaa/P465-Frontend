@@ -1,47 +1,70 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 
 const VenueDashboard = () => {
     const navigate = useNavigate();
     const { logout } = useContext(AuthContext);
+    const [userData, setUserData] = useState(null); // Add state for storing user data
 
     useEffect(() => {
         document.title = 'Venue Dashboard | RhythmReserve';
+        fetchVenueData();
     }, []);
+    
+    const fetchVenueData = async () => {
+        // Retrieve the user's email from session storage
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        const email = user?.email;
+
+        // Early exit if no email found
+        if (!email) {
+            console.error('No email found in session storage.');
+            return;
+        }
+
+        try {
+            // Adjust the URL and request method according to your backend setup
+            const response = await fetch('http://localhost:8000/auth/get_venue_data/', {
+                method: 'GET', // Assuming you change to a POST method in your backend
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }), // Send the email in the request body
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+
+            const data = await response.json();
+            setUserData(data); // Update the state with fetched data
+            console.log("userData: " + userData);
+        } catch (error) {
+            console.error('Error fetching venue data:', error);
+        }
+    };
 
     const handleLogout = () => {
         logout(); // update 
         navigate('/vlogin'); // redirect to login page afterwards
     };
 
+    const createEvent = () => {
+        //navigate('/create_event;);
+    }
+
     return (
         <div>
-            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
-                <Container fluid>
-                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto fw-normal custom-nav-links">
-                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
-                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
-                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
-                        </Nav>
-                        <div>
-                            <Button onClick={handleLogout} className="btn-styles me-2" variant="primary" size="sm">Logout</Button>
-                        </div>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
             <div className="home-page text-white fw-bold">
                 <div className="dashboard">
-                    <h1>Welcome your dashboard!</h1>
+                    <h1>Welcome!</h1>
                     <p>You are now logged in! See events below!</p>
                     
-                    <button className="btn btn-primary">Create Event</button>
+                    <Button onClick={createEvent} className="btn-styles me-2" variant="primary" size="sm">Create Event</Button>
                     {/* 
                     As we flesh out the event app in the backend, this should eventually 
                     get the number of events that include this venue as the venue name and make the cards that way. 
