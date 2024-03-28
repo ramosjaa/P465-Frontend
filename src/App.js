@@ -26,7 +26,11 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(
         sessionStorage.getItem('isAuthenticated') === 'true'
     );
-    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user'))); // Retrieve user data from sessionStorage
+    
+    const [user, setUser] = useState(() => {
+        const userData = sessionStorage.getItem('user');
+        return userData ? JSON.parse(userData) : null; // Only parse if userData is not null/undefined
+      });
 
     useEffect(() => {
         // check for auth state and user data in sessionStorage
