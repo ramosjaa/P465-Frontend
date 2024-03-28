@@ -23,8 +23,8 @@ const Dashboard = () => {
     }, []);
 
     const fetchUserData = async () => {
-        // Retrieve the user's email from local storage
-        const user = JSON.parse(localStorage.getItem('user'));
+        // Retrieve the user's email from session storage
+        const user = JSON.parse(sessionStorage.getItem('user'));
         const email = user?.email;
 
         // Early exit if no email found

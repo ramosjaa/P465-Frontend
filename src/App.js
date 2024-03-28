@@ -24,14 +24,14 @@ export const AuthContext = React.createContext({
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(
-        localStorage.getItem('isAuthenticated') === 'true'
+        sessionStorage.getItem('isAuthenticated') === 'true'
     );
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user'))); // Retrieve user data from localStorage
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user'))); // Retrieve user data from sessionStorage
 
     useEffect(() => {
-        // check for auth state and user data in localStorage
-        const token = localStorage.getItem('authToken');
-        const userData = localStorage.getItem('user');
+        // check for auth state and user data in sessionStorage
+        const token = sessionStorage.getItem('authToken');
+        const userData = sessionStorage.getItem('user');
 
         if (token) {
             setIsAuthenticated(true);
@@ -47,15 +47,15 @@ function App() {
         setIsAuthenticated(true);
         console.log(userData);
         setUser(userData); // Set user data in state
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify(userData)); // Store user data in localStorage
+        sessionStorage.setItem('isAuthenticated', 'true');
+        sessionStorage.setItem('user', JSON.stringify(userData)); // Store user data in sessionStorage
     };
 
     const logout = () => {
         setIsAuthenticated(false);
         setUser(null); // Clear user data from state
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('user'); // Clear user data from localStorage
+        sessionStorage.removeItem('isAuthenticated');
+        sessionStorage.removeItem('user'); // Clear user data from sessionStorage
     };
 
     // Include `user` in the context value
