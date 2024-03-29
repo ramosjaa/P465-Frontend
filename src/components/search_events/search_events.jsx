@@ -3,15 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import { Navbar, Nav, Container, Button, Form } from 'react-bootstrap';
 
-const Search = () => {
+const Search = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('');
+  // const [events, setEvents] = useState([]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // handle searching with the API here and change the cards with the filter
-    console.log(`Searching for: ${searchTerm} with filter: ${selectedFilter}`);
-  };
+    const searchEvents = async (query) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/events/search_events/?q=${query}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(response);// Parse response body as JSON
+            console.log("Response data:", data); // Log parsed response data
+            props.setEvents(data); // Set parsed JSON data to events state
+        } catch (error) {
+            console.error('There was a problem with your fetch operation:', error);
+        }
+    };
+
+    const handleSearch = (event, setEvents) => {
+        event.preventDefault();
+        console.log(event.target.elements.searchTerm.value); // Check the event target
+        const query = event.target.elements.searchTerm.value;
+        console.log(query); // Check the value of query
+        searchEvents(query, props.setEvents);
+    };
+
 
   return (
     <Container className="text-white">
