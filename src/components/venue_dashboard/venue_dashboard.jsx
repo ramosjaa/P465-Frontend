@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button, Form, Modal } from 'react-bootstrap';
 
 const VenueDashboard = () => {
     const navigate = useNavigate();
@@ -14,8 +14,52 @@ const VenueDashboard = () => {
     }, []);
 
     const handleLogout = () => {
-        logout(); // update 
-        navigate('/vlogin'); // redirect to login page afterwards
+        logout();
+        navigate('/vlogin');
+    };
+
+    const [showEventForm, setShowEventForm] = useState(false);
+
+    const handleClose = () => setShowEventForm(false);
+    const handleShow = () => setShowEventForm(true);
+
+    const [eventName, setEventName] = useState('');
+    const [eventTime, setEventTime] = useState('');
+    const [eventLocation, setEventLocation] = useState('');
+    const [eventImageUrl, setEventImageUrl] = useState('');
+    const [availableGeneralAdmissionTickets, setAvailableGeneralAdmissionTickets] = useState('');
+    const [generalAdmissionPrice, setGeneralAdmissionPrice] = useState('');
+    const [availableVipTickets, setAvailableVipTickets] = useState('');
+    const [vipTicketPrice, setVipTicketPrice] = useState('');
+    const [eventGenre, setEventGenre] = useState('');
+    const [eventDescription, setEventDescription] = useState('');
+
+    const handleCreateEvent = () => {
+        console.log({
+            eventName,
+            eventTime,
+            eventLocation,
+            eventImageUrl,
+            availableGeneralAdmissionTickets,
+            generalAdmissionPrice,
+            availableVipTickets,
+            vipTicketPrice,
+            eventGenre,
+            eventDescription
+        });
+
+        setEventName('');
+        setEventTime('');
+        setEventLocation('');
+        setEventImageUrl('');
+        setAvailableGeneralAdmissionTickets('');
+        setGeneralAdmissionPrice('');
+        setAvailableVipTickets('');
+        setVipTicketPrice('');
+        setEventGenre('');
+        setEventDescription('');
+
+        handleClose();
     };
 
     return (
@@ -41,12 +85,65 @@ const VenueDashboard = () => {
                     <h1>Welcome your dashboard!</h1>
                     <p>You are now logged in! See events below!</p>
                     
-                    <button className="btn btn-primary">Create Event</button>
-                    {/* 
-                    As we flesh out the event app in the backend, this should eventually 
-                    get the number of events that include this venue as the venue name and make the cards that way. 
-                    This is placeholder for now.
-                */}
+                    <Button className="btn btn-primary" onClick={handleShow}>Create Event</Button>
+
+                    <Modal show={showEventForm} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Create Event</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form>
+                                {/* Input fields for event attributes */}
+                                <Form.Group controlId="eventName">
+                                <Form.Label>Event Name</Form.Label>
+                                <Form.Control type="text" placeholder="Enter event name" value={eventName} onChange={(e) => setEventName(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="eventTime">
+                                <Form.Label>Event Time</Form.Label>
+                                <Form.Control type="text" placeholder="Enter event time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="eventLocation">
+                                <Form.Label>Event Location</Form.Label>
+                                <Form.Control type="text" placeholder="Enter event location" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="eventImageUrl">
+                                <Form.Label>Event Image Url</Form.Label>
+                                <Form.Control type="text" placeholder="Enter event image url" value={eventImageUrl} onChange={(e) => setEventImageUrl(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="availableGeneralAdmissionTickets">
+                                <Form.Label>Available General Admission Tickets</Form.Label>
+                                <Form.Control type="text" placeholder="Enter available general admission tickets" value={availableGeneralAdmissionTickets} onChange={(e) => setAvailableGeneralAdmissionTickets(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="generalAdmissionPrice">
+                                <Form.Label>General Admission Price</Form.Label>
+                                <Form.Control type="text" placeholder="Enter general admission price" value={generalAdmissionPrice} onChange={(e) => setGeneralAdmissionPrice(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="avaliableVIPTickets">
+                                <Form.Label>Avaliable VIP Tickets</Form.Label>
+                                <Form.Control type="text" placeholder="Enter avaliable VIP tickets" value={availableVipTickets} onChange={(e) => setAvailableVipTickets(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="vipTicketPrice">
+                                <Form.Label>VIP Ticket Price</Form.Label>
+                                <Form.Control type="text" placeholder="Enter VIP Ticket Price" value={vipTicketPrice} onChange={(e) => setVipTicketPrice(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="eventGenre">
+                                <Form.Label>Event Genre</Form.Label>
+                                <Form.Control type="text" placeholder="Enter event genre" value={eventGenre} onChange={(e) => setEventGenre(e.target.value)} />
+                            </Form.Group>
+                            <Form.Group controlId="eventDescription">
+                                <Form.Label>Event Description</Form.Label>
+                                <Form.Control type="text" placeholder="Enter event description" value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
+                            </Form.Group>
+                                {/* Add similar Form.Group for other attributes */}
+                            </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>Close</Button>
+                            <Button variant="primary" onClick={handleCreateEvent}>Create Event</Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                    {/* Existing event cards */}
                     <div className="row mt-5">
                         {[...Array(9)].map((_, index) => (
                             <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
@@ -55,7 +152,6 @@ const VenueDashboard = () => {
                                     <div className="card-body">
                                         <h5 className="card-title">Event</h5>
                                         <button className="btn btn-primary">Edit</button>
-
                                         <button className="btn btn-primary">Delete</button>
                                     </div>
                                 </div>
@@ -64,7 +160,6 @@ const VenueDashboard = () => {
                     </div>
                 </div>
             </div>
-            
         </div>
     );
 };
