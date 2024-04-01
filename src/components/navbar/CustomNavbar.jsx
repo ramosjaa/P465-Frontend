@@ -5,14 +5,26 @@ import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import InfoButton from '../info_button/InfoButton';
 
 const NavButtons = () => {
-    const isAuthenticated = sessionStorage.getItem('isAuthenticated');
-    const navigate = useNavigate();
+    const navigate = useNavigate(AuthContext);
     const { logout } = useContext(AuthContext);
 
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const type = user?.type;
+
+    const handleLogout = () => {
+        logout();
+        navigate("/home");
+    }
+
     if (isAuthenticated) {
-        return (
-            <InfoButton />
-        )
+        if (type == 1) { //we only have an info button for regular users right now, will add functionality for venues eventually
+            return (
+                <InfoButton />
+            )
+        } else {
+            return (<Button onClick={handleLogout} className="btn-styles me-2" variant="primary" size="sm" >Logout</Button>);
+        }
     } else {
         return (
             <div>

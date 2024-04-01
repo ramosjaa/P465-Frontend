@@ -1,4 +1,13 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFacebookF,
+  faTwitter,
+  faGoogle,
+  faInstagram,
+  faLinkedinIn,
+  faGithub
+} from '@fortawesome/free-brands-svg-icons';
 import { Container, Row, Col } from 'react-bootstrap';
 
 const Footer = () => {
@@ -104,13 +113,9 @@ const Footer = () => {
             </div>
           </section>
         </div>
-        <div
-          className="text-center p-3"
-        >
-          © 2020 Copyright:
-          <a className="text-white" href="#"
-          >rhythmreserve.com</a
-          >
+        <div className="text-center p-3">
+          © 2024 Copyright:
+          <a className="text-white" href="#">rhythmreserve.com</a>
         </div>
       </footer>
     </div>

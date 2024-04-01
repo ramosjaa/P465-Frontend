@@ -9,7 +9,7 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 
 const InfoButton = () => {
     const navigate = useNavigate(AuthContext);
-    const logout = useContext(AuthContext);
+    const { logout } = useContext(AuthContext);
     const [showUserInfo, setShowUserInfo] = useState(false);
     const [userData, setUserData] = useState(null); // Add state for storing user data
 

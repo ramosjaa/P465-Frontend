@@ -76,18 +76,21 @@ function App() {
 
     // route protection
     const UProtectedRoute = ({ children }) => {
-        if (!isAuthenticated) {
-            // redirect to login page if not logged in.
-            return <Navigate to='/login' />;
+        const type = user?.type;
+        if (!isAuthenticated || type != 1) {
+            // redirect to login if not logged in.
+            console.log("Access denied: " + type);
+            return <Navigate to='/home' />;
         }
 
         return children;
     };
 
     const VProtectedRoute = ({ children }) => {
-        if (!isAuthenticated) {
-            // redirect to login page if not logged in.
-            return <Navigate to='/login' />;
+        const type = user?.type;
+        if (!isAuthenticated || type != 2) {
+            // redirect to home if not logged in.
+            return <Navigate to='/home' />;
         }
 
         return children;

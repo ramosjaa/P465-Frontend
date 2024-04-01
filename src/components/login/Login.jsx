@@ -12,8 +12,6 @@ import { GoogleLogin } from '@react-oauth/google';
 // google auth client id
 const clientId = '1007116342844-hbm6up78s4ooss7bk2eksthhqgn6hu4g.apps.googleusercontent.com';
 
-
-
 function LoginForm() {
 
     //google authentication and sign in
@@ -40,11 +38,12 @@ function LoginForm() {
 
         const data = await response.json();
         const { email } = data;
+        const { type } = 1
         console.log('Login Success:', data);
 
-        
         const userData = {
-          email: email
+          email: email,
+          type: type
         };
 
         login(userData); // pass userData into login
@@ -107,8 +106,9 @@ function LoginForm() {
                 console.log('Login Success:', data);
 
                 const userData = {
-                    email: loginData.email
-                  };
+                    email: loginData.email,
+                    type: 1
+                };
 
                 //post-login logic
                 login(userData) //user logged in, update AuthContext

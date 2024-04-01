@@ -3,15 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './landingpage.css';
 import '../../App.css';
 import {Navbar, Nav, Container, Button} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faFacebookF,
-    faTwitter,
-    faGoogle,
-    faInstagram,
-    faLinkedinIn,
-    faGithub
-} from '@fortawesome/free-brands-svg-icons';
+
 
 const LandingPage = () => {
     return (

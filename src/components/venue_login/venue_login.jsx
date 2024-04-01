@@ -54,7 +54,7 @@ function VenueLoginForm() {
             if (response.ok) {
                 console.log('Login Success:', data);
                 //post-signup logic
-                login({email: formData.email}) //user logged in, update AuthContext
+                login({email: formData.email, type: 2}) //user logged in, update AuthContext
                 navigate('/vdashboard') //navigate to dashboard
             } else {
                 console.error('Login Error:', data.error);

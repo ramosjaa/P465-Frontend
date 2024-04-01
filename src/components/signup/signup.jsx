@@ -38,7 +38,7 @@ function SignupForm() {
           case 2:
             return <SignupDetails formData={formData} setFormData={setFormData} onNext={handleNext} onPrevious={handlePrevious} signUpOption={signUpOption}/>;
           case 3:
-            login({email: formData.email})
+            login({email: formData.email, type: 1})
             navigate('/dashboard'); // navigate to dashboard
           default:
             return null;
