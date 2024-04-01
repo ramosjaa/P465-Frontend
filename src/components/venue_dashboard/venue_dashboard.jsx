@@ -64,22 +64,6 @@ const VenueDashboard = () => {
 
     return (
         <div>
-            <Navbar bg="none" variant="dark" expand="lg" className="justify-content-between">
-                <Container fluid>
-                    <Navbar.Brand href="/home" className="text-white fs-3 fw-bold ml-5">Rhythm Reserve</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto fw-normal custom-nav-links">
-                            <Nav.Link href="#events" className="me-2">Events</Nav.Link>
-                            <Nav.Link href="#live" className="me-2">Live</Nav.Link>
-                            <Nav.Link href="#venues" className="me-2">Venues</Nav.Link>
-                        </Nav>
-                        <div>
-                            <Button onClick={handleLogout} className="btn-styles me-2" variant="primary" size="sm">Logout</Button>
-                        </div>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
             <div className="home-page text-white fw-bold">
                 <div className="dashboard">
                     <h1>Welcome your dashboard!</h1>

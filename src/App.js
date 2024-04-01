@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminDashRedirect from './components/admindashredirect/AdminDashRedirect';
 import LandingPage from './components/landingpage/landingpage';
 import Footer from './components/Footer/Footer.jsx';
+import CustomNavbar from './components/navbar/CustomNavbar.jsx';
 
 // auth context for user
 export const AuthContext = React.createContext({
@@ -74,7 +75,7 @@ function App() {
     );
 
     // route protection
-    const ProtectedRoute = ({ children }) => {
+    const UProtectedRoute = ({ children }) => {
         if (!isAuthenticated) {
             // redirect to login page if not logged in.
             return <Navigate to='/login' />;
@@ -83,10 +84,21 @@ function App() {
         return children;
     };
 
+    const VProtectedRoute = ({ children }) => {
+        if (!isAuthenticated) {
+            // redirect to login page if not logged in.
+            return <Navigate to='/login' />;
+        }
+
+        return children;
+    };
+
+
     // adding paths
     return (
         <AuthContext.Provider value={authContextValue}>
             <BrowserRouter>
+                <CustomNavbar />
                 <Routes>
                     <Route path='/home' element={<LandingPage />} />
                     <Route path='/login' element={<Login />} />
@@ -101,17 +113,17 @@ function App() {
                     <Route
                         path='/dashboard'
                         element={
-                            <ProtectedRoute>
+                            <UProtectedRoute>
                                 <Dashboard />
-                            </ProtectedRoute>
+                            </UProtectedRoute>
                         }
                     />
                     <Route
                         path='/vdashboard'
                         element={
-                            <ProtectedRoute>
+                            <VProtectedRoute>
                                 <VenueDashboard />
-                            </ProtectedRoute>
+                            </VProtectedRoute>
                         }
                     />
                     <Route path='/admin' element={<AdminDashRedirect />} />
