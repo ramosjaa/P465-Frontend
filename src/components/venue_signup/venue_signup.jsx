@@ -27,7 +27,7 @@ function VenueSignupForm() {
     useEffect(() => {
         // Redirect to dashboard if already logged in
         if (isAuthenticated) {
-            navigate('/dashboard');
+            navigate('/vdashboard');
         }
     }, [isAuthenticated, navigate]);
 
@@ -99,7 +99,6 @@ function VenueSignupForm() {
         flow: 'auth-code',
     }
     );
-
 
     return (
         <div className="home-page">

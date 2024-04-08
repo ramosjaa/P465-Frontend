@@ -1,63 +1,94 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../App';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-import { Navbar, Nav, Container, Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
+import { Calendar } from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const VenueDashboard = () => {
-    const navigate = useNavigate();
-    const { logout } = useContext(AuthContext);
-
     useEffect(() => {
         document.title = 'Venue Dashboard | RhythmReserve';
     }, []);
-
-    const handleLogout = () => {
-        logout();
-        navigate('/vlogin');
-    };
 
     const [showEventForm, setShowEventForm] = useState(false);
 
     const handleClose = () => setShowEventForm(false);
     const handleShow = () => setShowEventForm(true);
 
-    const [eventName, setEventName] = useState('');
-    const [eventTime, setEventTime] = useState('');
-    const [eventLocation, setEventLocation] = useState('');
-    const [eventImageUrl, setEventImageUrl] = useState('');
-    const [availableGeneralAdmissionTickets, setAvailableGeneralAdmissionTickets] = useState('');
-    const [generalAdmissionPrice, setGeneralAdmissionPrice] = useState('');
-    const [availableVipTickets, setAvailableVipTickets] = useState('');
-    const [vipTicketPrice, setVipTicketPrice] = useState('');
-    const [eventGenre, setEventGenre] = useState('');
-    const [eventDescription, setEventDescription] = useState('');
+    // const [eventName, setEventName] = useState('');
+    // const [eventTime, setEventTime] = useState('');
+    // const [eventLocation, setEventLocation] = useState('');
+    // const [eventImage, setEventImage] = useState(null);
+    // const [availGATix, setAvailGATix] = useState('');
+    // const [gaPrice, setGAPrice] = useState('');
+    // const [availVipTix, setAvailVipTix] = useState('');
+    // const [vipPrice, setVipPrice] = useState('');
+    // const [eventGenre, setEventGenre] = useState('');
+    // const [eventDescription, setEventDescription] = useState('');
 
-    const handleCreateEvent = () => {
-        console.log({
-            eventName,
-            eventTime,
-            eventLocation,
-            eventImageUrl,
-            availableGeneralAdmissionTickets,
-            generalAdmissionPrice,
-            availableVipTickets,
-            vipTicketPrice,
-            eventGenre,
-            eventDescription
-        });
+    const [formData, setFormData] = useState({
+        eventName: '',
+        eventLocation: '',
+        eventImage: '',
+        availGATix: '',
+        gaPrice: '',
+        availVipTix: '',
+        vipPrice: '',
+        eventGenre: '',
+        eventDescription: ''
+    });
 
-        setEventName('');
-        setEventTime('');
-        setEventLocation('');
-        setEventImageUrl('');
-        setAvailableGeneralAdmissionTickets('');
-        setGeneralAdmissionPrice('');
-        setAvailableVipTickets('');
-        setVipTicketPrice('');
-        setEventGenre('');
-        setEventDescription('');
+    const [eventImage, setEventImage] = useState(null);
+    const [date, setDate] = useState(new Date());
+    const [eventTime, setEventTime] = useState(null);
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleCreateEvent = async (e) => {
+        e.preventDefault();
+
+        const payloadData = new FormData();
+        const user = sessionStorage.getItem('user');
+        payloadData.append('venueUser', user?.email);
+        payloadData.append('eventName', formData.eventName);
+        payloadData.append('eventTime', eventTime);
+        payloadData.append('eventLocation', formData.eventLocation);
+        payloadData.append('eventImage', formData.eventImage);
+        payloadData.append('availGATix', formData.availGATix);
+        payloadData.append('gaPrice', formData.gaPrice);
+        payloadData.append('availVipTix', formData.availVipTix);
+        payloadData.append('vipPrice', formData.vipPrice);
+        payloadData.append('eventGenre', formData.eventGenre);
+        payloadData.append('eventDescription', formData.eventDescription);
+
+        console.log(JSON.stringify(payloadData));
+        try {
+            const response = await fetch('http://localhost:8000/events/create_event/', {
+                method: 'POST',
+                body: payloadData, // Send formData instead of JSON
+            });
+
+            console.log(JSON.stringify(payloadData));
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log('Registration Success:', data);
+
+            } else {
+                console.error('Creation Error:', data.error);
+                alert('Event creation failed: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Request Failed:', error);
+            alert('An error occurred. Please try again.');
+        }
 
         handleClose();
     };
@@ -68,7 +99,7 @@ const VenueDashboard = () => {
                 <div className="dashboard">
                     <h1>Welcome your dashboard!</h1>
                     <p>You are now logged in! See events below!</p>
-                    
+
                     <Button className="btn btn-primary" onClick={handleShow}>Create Event</Button>
 
                     <Modal show={showEventForm} onHide={handleClose}>
@@ -76,50 +107,193 @@ const VenueDashboard = () => {
                             <Modal.Title>Create Event</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form>
+                            <form>
                                 {/* Input fields for event attributes */}
-                                <Form.Group controlId="eventName">
-                                <Form.Label>Event Name</Form.Label>
-                                <Form.Control type="text" placeholder="Enter event name" value={eventName} onChange={(e) => setEventName(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="eventTime">
-                                <Form.Label>Event Time</Form.Label>
-                                <Form.Control type="text" placeholder="Enter event time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="eventLocation">
-                                <Form.Label>Event Location</Form.Label>
-                                <Form.Control type="text" placeholder="Enter event location" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="eventImageUrl">
-                                <Form.Label>Event Image Url</Form.Label>
-                                <Form.Control type="text" placeholder="Enter event image url" value={eventImageUrl} onChange={(e) => setEventImageUrl(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="availableGeneralAdmissionTickets">
-                                <Form.Label>Available General Admission Tickets</Form.Label>
-                                <Form.Control type="text" placeholder="Enter available general admission tickets" value={availableGeneralAdmissionTickets} onChange={(e) => setAvailableGeneralAdmissionTickets(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="generalAdmissionPrice">
-                                <Form.Label>General Admission Price</Form.Label>
-                                <Form.Control type="text" placeholder="Enter general admission price" value={generalAdmissionPrice} onChange={(e) => setGeneralAdmissionPrice(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="avaliableVIPTickets">
-                                <Form.Label>Avaliable VIP Tickets</Form.Label>
-                                <Form.Control type="text" placeholder="Enter avaliable VIP tickets" value={availableVipTickets} onChange={(e) => setAvailableVipTickets(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="vipTicketPrice">
-                                <Form.Label>VIP Ticket Price</Form.Label>
-                                <Form.Control type="text" placeholder="Enter VIP Ticket Price" value={vipTicketPrice} onChange={(e) => setVipTicketPrice(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="eventGenre">
-                                <Form.Label>Event Genre</Form.Label>
-                                <Form.Control type="text" placeholder="Enter event genre" value={eventGenre} onChange={(e) => setEventGenre(e.target.value)} />
-                            </Form.Group>
-                            <Form.Group controlId="eventDescription">
-                                <Form.Label>Event Description</Form.Label>
-                                <Form.Control type="text" placeholder="Enter event description" value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
-                            </Form.Group>
+                                {eventImage && (
+                                    <div>
+                                        <img
+                                            alt="not found"
+                                            width={"100px"}
+                                            src={URL.createObjectURL(eventImage)}
+                                        />
+                                        <br />
+                                        <button onClick={() => {
+                                            setEventImage(null);
+                                        }}>Remove</button>
+                                    </div>
+                                )}
+
+                                <br />
+                                <br />
+
+                                <input
+                                    type="file"
+                                    name="eventImage"
+                                    onChange={(event) => {
+                                        console.log(event.target.files[0]);
+                                        setEventImage(event.target.files[0]);
+                                    }}
+                                />
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="eventName"
+                                            className="form-label">Event Name</label>
+                                        <input
+                                            type="text"
+                                            id="eventName"
+                                            name="eventName"
+                                            className="form-control"
+                                            value={formData.eventName}
+                                            onChange={handleChange}
+                                            placeholder="Event Name"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                {/* <div className="d-flex flex-row align-items-center mb-3"> 
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="eventTime"
+                                            className="form-label">Event Time</label>
+                                        <input
+                                            type="text"
+                                            id="eventTime"
+                                            name="eventTime"
+                                            className="form-control"
+                                            value={formData.eventTime}
+                                            onChange={handleChange}
+                                            placeholder="Event Time"
+                                            required
+                                        />
+                                    </div> 
+                                </div>
+                                */}
+
+                                <div>
+                                    <Calendar
+                                        calendarType='gregory'
+                                        onChange={(value) => setEventTime(value.toDateString())}
+                                        value={date}
+                                    />
+                                </div>
+                                <div>
+                                    <p>You selected: {eventTime}</p>
+                                </div>
+
+                                <br />
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="eventLocation"
+                                            className="form-label">Event Location</label>
+                                        <input
+                                            type="text"
+                                            id="eventLocation"
+                                            name="eventLocation"
+                                            className="form-control"
+                                            value={formData.eventLocation}
+                                            onChange={handleChange}
+                                            placeholder="Event Location"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="availGATix"
+                                            className="form-label">Available GA Tickets</label>
+                                        <input
+                                            type="text"
+                                            id="availGATix"
+                                            name="availGATix"
+                                            className="form-control"
+                                            value={formData.availGATix}
+                                            onChange={handleChange}
+                                            placeholder="Available GA Tickets"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="gaPrice"
+                                            className="form-label">GA Price</label>
+                                        <input
+                                            type="text"
+                                            id="gaPrice"
+                                            name="gaPrice"
+                                            className="form-control"
+                                            value={formData.gaPrice}
+                                            onChange={handleChange}
+                                            placeholder="GA Price"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="availVipTix"
+                                            className="form-label">Available VIP Tickets</label>
+                                        <input
+                                            type="text"
+                                            id="availVipTix"
+                                            name="availVipTix"
+                                            className="form-control"
+                                            value={formData.availVipTix}
+                                            onChange={handleChange}
+                                            placeholder="Available VIP Tickets"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="vipPrice"
+                                            className="form-label">VIP Price</label>
+                                        <input
+                                            type="text"
+                                            id="vipPrice"
+                                            name="vipPrice"
+                                            className="form-control"
+                                            value={formData.vipPrice}
+                                            onChange={handleChange}
+                                            placeholder="VIP Price"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="eventGenre"
+                                            className="form-label">Event Genre</label>
+                                        <input
+                                            type="text"
+                                            id="eventGenre"
+                                            name="eventGenre"
+                                            className="form-control"
+                                            value={formData.eventGenre}
+                                            onChange={handleChange}
+                                            placeholder="Event Genre"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="eventDescription"
+                                            className="form-label">Event Description</label>
+                                        <input
+                                            type="text"
+                                            id="eventDescription"
+                                            name="eventDescription"
+                                            className="form-control"
+                                            value={formData.eventDescription}
+                                            onChange={handleChange}
+                                            placeholder="Event Description"
+                                            required
+                                        />
+                                    </div>
+                                </div>
                                 {/* Add similar Form.Group for other attributes */}
-                            </Form>
+                            </form>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleClose}>Close</Button>
