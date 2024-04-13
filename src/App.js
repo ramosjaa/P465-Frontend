@@ -14,24 +14,25 @@ import AdminDashRedirect from './components/admindashredirect/AdminDashRedirect'
 import LandingPage from './components/landingpage/landingpage';
 import Footer from './components/Footer/Footer.jsx';
 import CustomNavbar from './components/navbar/CustomNavbar.jsx';
+import PaymentForm from './components/payment_form/PaymentForm.jsx';
 
 // auth context for user
 export const AuthContext = React.createContext({
     isAuthenticated: false,
     user: null, // get user email, other details
-    login: () => {},
-    logout: () => {},
+    login: () => { },
+    logout: () => { },
 });
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(
         sessionStorage.getItem('isAuthenticated') === 'true'
     );
-    
+
     const [user, setUser] = useState(() => {
         const userData = sessionStorage.getItem('user');
         return userData ? JSON.parse(userData) : null; // Only parse if userData is not null/undefined
-      });
+    });
 
     useEffect(() => {
         // check for auth state and user data in sessionStorage
@@ -130,6 +131,7 @@ function App() {
                         }
                     />
                     <Route path='/admin' element={<AdminDashRedirect />} />
+                    <Route path='/pay' element={<PaymentForm />} />
                     {/* redirect to login if no other routes matched (can update to splash maybe?) */}
                     <Route path='*' element={<Navigate to='/home' />} />
                 </Routes>
