@@ -33,6 +33,58 @@
     font-weight: bold;
 }
 
+.chat-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000; /* High z-index to keep it above other content */
+}
+
+.chat-message {
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 20px;
+    display: inline-block;
+    max-width: 80%;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+    margin-left: 20%;
+    text-align: right;
+}
+
+.chat-history {
+    display: flex;
+    flex-direction: column;
+    max-height: 300px; /* Adjust as needed */
+    overflow-y: auto;
+}
+
+.chat-message {
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 20px;
+    display: inline-block;
+    max-width: 80%;
+    word-break: break-word; /* This prevents text from overflowing */
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end; /* Aligns user messages to the right */
+    text-align: right;
+}
+
+.admin-message {
+    background-color: #e0e0e0;
+    color: black;
+    align-self: flex-start; /* Aligns admin messages to the left */
+    text-align: left;
+}
+
 .btn-styles {
     background-color: darkslateblue;
     color: white;
