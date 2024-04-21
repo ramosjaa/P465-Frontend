@@ -4,7 +4,7 @@ import { AuthContext } from '../../App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 import './Login.css'
-import {Navbar, Nav, Container, Button} from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
@@ -14,8 +14,38 @@ const clientId = '1007116342844-hbm6up78s4ooss7bk2eksthhqgn6hu4g.apps.googleuser
 
 function LoginForm() {
 
+    const fetchUserId = async (email) => {
+        try {
+            console.log("Email in fetch: ", email);
+            const response = await fetch('http://localhost:8000/auth/get_user_id/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                //setId(data.id);
+                //console.log("Id is now: ", id);
+                return data.id;
+            } else {
+                //setId(null);
+                console.error("Request failed");
+                alert("Fetch error 1 ocurred. Please try again.");
+                return null;
+            }
+        } catch (error) {
+            console.error('Request Failed:', error);
+            alert('Fetch error 2 occurred. Please try again.');
+            return null;
+        }
+    }
+
     //google authentication and sign in
     const handleGoogleSignIn = async (credentialResponse) => {
+        console.log(credentialResponse.credential);
         try {
             const response = await fetch('http://localhost:8000/auth/google_signin/', {
                 method: 'POST',
@@ -25,35 +55,38 @@ function LoginForm() {
                 body: JSON.stringify({ credential: credentialResponse.credential }),
             });
 
-      if (response.ok) {
+            if (response.ok) {
+                const response = await fetch('http://localhost:8000/auth/google_email/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ credential: credentialResponse.credential }),
+                });
 
-        const response = await fetch('http://localhost:8000/auth/google_email/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ credential: credentialResponse.credential }),
-        });
 
+                const data = await response.json();
+                const { email } = data;
+                console.log('Login Success:', data);
 
-        const data = await response.json();
-        const { email } = data;
-        const { type } = 1
-        console.log('Login Success:', data);
+                console.log("Email in google sign in: ", email);
+                const id = await fetchUserId(email);
 
-        const userData = {
-          email: email,
-          type: type
-        };
+                const userData = {
+                    id: id,
+                    email: email,
+                    type: 1
+                };
 
-        login(userData); // pass userData into login
-        navigate('/dashboard'); // navigate to dashboard
-      }
-    } catch (error) {
-      console.error('Request Failed:', error);
-      alert('An error occurred. Please try again.');
-    }
-  };
+                login(userData); // pass userData into login
+                navigate('/dashboard'); // navigate to dashboard
+            }
+
+        } catch (error) {
+            console.error('Request Failed:', error);
+            alert('An error occurred. Please try again.');
+        }
+    };
 
 
     const [loginData, setLoginData] = useState({
@@ -86,6 +119,8 @@ function LoginForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const id = await fetchUserId(loginData.email);
+
         const payload = {
             email: loginData.email,
             password: loginData.password,
@@ -102,10 +137,11 @@ function LoginForm() {
             });
 
             const data = await response.json();
+
             if (response.ok) {
                 console.log('Login Success:', data);
-
                 const userData = {
+                    id: id,
                     email: loginData.email,
                     type: 1
                 };
@@ -113,6 +149,7 @@ function LoginForm() {
                 //post-login logic
                 login(userData) //user logged in, update AuthContext
                 navigate('/dashboard') //navigate to dashboard
+
             } else {
                 console.error('Login Error:', data.error);
                 alert('Login Failed: ' + data.error);

@@ -14,6 +14,8 @@ const PaymentForm = () => {
     const ticketType = location.state?.ticketType;
     const priceDetails=location.state;
     const navigate = useNavigate();
+    const userData = sessionStorage.getItem('user');
+
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the default form submission
 
@@ -26,7 +28,7 @@ const PaymentForm = () => {
             status: "Success",
             amount: priceDetails.price,
             type: priceDetails.type, // Include the ticket type
-            user_id: 19
+            user_id: userData?.id
         };
 
         try {
