@@ -72,7 +72,7 @@ const VenueDashboard = () => {
 
         console.log(JSON.stringify(payloadData));
         try {
-            const response = await fetch('http://localhost:8000/events/create_event/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/events/create_event/', {
                 method: 'POST',
                 body: payloadData, // Send formData instead of JSON
             });

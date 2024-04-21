@@ -34,7 +34,7 @@ const InfoButton = () => {
 
         try {
             // Adjust the URL and request method according to your backend setup
-            const response = await fetch('http://localhost:8000/auth/get_user_data/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/get_user_data/', {
                 method: 'POST', // Assuming you change to a POST method in your backend
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const InfoButton = () => {
         console.log(editableUserData)
         try {
             // Adjust with your actual endpoint and method
-            const response = await fetch('http://localhost:8000/user_actions/edit_profile/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/user_actions/edit_profile/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -47,7 +47,7 @@ function LoginForm() {
     const handleGoogleSignIn = async (credentialResponse) => {
         console.log(credentialResponse.credential);
         try {
-            const response = await fetch('http://localhost:8000/auth/google_signin/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/google_signin/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,14 +55,15 @@ function LoginForm() {
                 body: JSON.stringify({ credential: credentialResponse.credential }),
             });
 
-            if (response.ok) {
-                const response = await fetch('http://localhost:8000/auth/google_email/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ credential: credentialResponse.credential }),
-                });
+      if (response.ok) {
+
+        const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/google_email/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ credential: credentialResponse.credential }),
+        });
 
 
                 const data = await response.json();
@@ -128,7 +129,7 @@ function LoginForm() {
 
         try {
             //const response = await fetch('https://p465-backend-latest.onrender.com/auth/login/', {
-            const response = await fetch('http://localhost:8000/auth/login/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
