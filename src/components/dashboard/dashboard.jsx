@@ -1,22 +1,49 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate} from 'react-router-dom';
 import { AuthContext } from '../../App';
-import {Navbar, Nav, Container, Button, Col, Card, Row} from 'react-bootstrap';
+import { Navbar, Nav, Container, Button, Col, Card, Row, Modal } from 'react-bootstrap';
 import Search from '../search_events/search_events';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 
+
 const Dashboard = () => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState(null); // Add state for storing user data
+    const [userData, setUserData] = useState(null);
     const [events, setEvents] = useState([]);
     const [searched, setSearched] = useState(false);
+    const [show, setShow] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
 
     useEffect(() => {
         document.title = 'Dashboard | RhythmReserve';
     }, []);
 
-    console.log(events,"dashboard");
+    const handleShow = (event) => {
+        setShow(true);
+        setSelectedEvent(event);
+    };
+
+    const handlepriceClick = (price, type) => {
+        const priceDetails = {
+            price: price,
+            type: type  // Add the ticket type to the navigation state
+        };
+        navigate("/pay", { state: priceDetails });
+    }
+
+
+
+    const handleClose = () => setShow(false);
+
+    const redirectToPaymentForm = (ticketType) => {
+        console.log(`Redirecting to payment form for ${ticketType} ticket...`);
+        // Redirect logic here, for demonstration purposes only
+        navigate('/pay');
+        handleClose();
+    };
+
+    console.log(events, "dashboard");
     return (
         <div>
             <div className="home-page text-white fw-bold">
@@ -39,8 +66,10 @@ const Dashboard = () => {
                                                 <Card.Text>
                                                     <p>Location: {event.fields.event_location}</p>
                                                     <p>Description: {event.fields.description}</p>
-                                                    {/* Add more event details as needed */}
+                                                    <p>General Price: {event.fields.general_admission_price}</p>
+                                                    <p>VIP Price: {event.fields.vip_ticket_price}</p>
                                                 </Card.Text>
+                                                <Button variant="primary" onClick={() => handleShow(event)}>Buy Tickets</Button>
                                             </Card.Body>
                                         </Card>
                                     </Col>
@@ -72,6 +101,30 @@ const Dashboard = () => {
                     )}
                 </div>
             </div>
+
+            {/* Modal for selecting ticket type and redirecting to payment form */}
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Choose Your Ticket</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {selectedEvent && (
+                        <>
+                            <p>Please select the type of ticket you would like to purchase:</p>
+                            <Button variant="secondary" onClick={() => handlepriceClick(
+                                selectedEvent.fields.general_admission_price, 'General Admission'
+                            )}>
+                                General Admission - {selectedEvent.fields.general_admission_price}
+                            </Button>
+                            <Button variant="success" onClick={() => handlepriceClick(
+                                selectedEvent.fields.vip_ticket_price, 'VIP'
+                            )}>
+                                VIP Ticket - {selectedEvent.fields.vip_ticket_price}
+                            </Button>
+                        </>
+                    )}
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

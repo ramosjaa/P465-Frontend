@@ -15,6 +15,7 @@ import LandingPage from './components/landingpage/landingpage';
 import Footer from './components/Footer/Footer.jsx';
 import CustomNavbar from './components/navbar/CustomNavbar.jsx';
 import PaymentForm from './components/payment_form/PaymentForm.jsx';
+import PaymentSuccess from "./components/payment_form/PaymentSuccess";
 
 // auth context for user
 export const AuthContext = React.createContext({
@@ -132,6 +133,7 @@ function App() {
                     />
                     <Route path='/admin' element={<AdminDashRedirect />} />
                     <Route path='/pay' element={<PaymentForm />} />
+                    <Route path="/payment-success" element={<PaymentSuccess />} />
                     {/* redirect to login if no other routes matched (can update to splash maybe?) */}
                     <Route path='*' element={<Navigate to='/home' />} />
                 </Routes>
