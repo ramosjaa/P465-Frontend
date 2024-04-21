@@ -17,7 +17,9 @@ function LoginForm() {
     const fetchUserId = async (email) => {
         try {
             console.log("Email in fetch: ", email);
-            const response = await fetch('http://localhost:8000/auth/get_user_id/', {
+            
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/get_user_id/', {
+            //const response = await fetch('http://localhost:8000/auth/get_user_id/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,8 +130,8 @@ function LoginForm() {
         };
 
         try {
-            //const response = await fetch('https://p465-backend-latest.onrender.com/auth/login/', {
             const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/login/', {
+            //const response = await fetch('http://localhost:8000/auth/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

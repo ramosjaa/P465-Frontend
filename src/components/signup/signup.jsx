@@ -25,7 +25,8 @@ function SignupForm() {
   const fetchUserId = async (email) => {
     try {
       console.log("Email in fetch: ", email);
-      const response = await fetch('http://localhost:8000/auth/get_user_id/', {
+      const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/get_user_id/', {
+      //const response = await fetch('http://localhost:8000/auth/get_user_id/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,14 +61,18 @@ function SignupForm() {
     setStep(step - 1);
   };
 
+  const [id, setId] = useState(-1);
+
   const renderStep = async () => {
     switch (step) {
       case 1:
         return <SignupOptions formData={formData} setFormData={setFormData} onNext={handleNext} signupOption={signUpOption} setSignUpOption={setSignUpOption} />;
       case 2:
+        const getId = await fetchUserId(formData.email);
+        setId(getId);
         return <SignupDetails formData={formData} setFormData={setFormData} onNext={handleNext} onPrevious={handlePrevious} signUpOption={signUpOption} />;
       case 3:
-        const id = await fetchUserId(formData.email);
+        // const id = await fetchUserId(formData.email);
         const userData = {
           id: id,
           email: formData.email,
