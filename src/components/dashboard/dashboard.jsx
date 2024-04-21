@@ -24,8 +24,10 @@ const Dashboard = () => {
         setSelectedEvent(event);
     };
 
-    const handlepriceClick = (price, type) => {
+    const handlepriceClick = (event_name, event_time, price, type) => {
         const priceDetails = {
+            event_name: event_name,
+            event_time: event_time,
             price: price,
             type: type  // Add the ticket type to the navigation state
         };
@@ -66,6 +68,7 @@ const Dashboard = () => {
                                                 <Card.Text>
                                                     <p>Location: {event.fields.event_location}</p>
                                                     <p>Description: {event.fields.description}</p>
+                                                    <p>Event Time: {event.fields.event_time}</p>
                                                     <p>General Price: {event.fields.general_admission_price}</p>
                                                     <p>VIP Price: {event.fields.vip_ticket_price}</p>
                                                 </Card.Text>
@@ -111,13 +114,13 @@ const Dashboard = () => {
                     {selectedEvent && (
                         <>
                             <p>Please select the type of ticket you would like to purchase:</p>
-                            <Button variant="secondary" onClick={() => handlepriceClick(
-                                selectedEvent.fields.general_admission_price, 'General Admission'
+                            <Button variant="secondary" onClick={() => handlepriceClick(selectedEvent.fields.event_name,
+                                selectedEvent.fields.event_time,selectedEvent.fields.general_admission_price, 'General Admission'
                             )}>
                                 General Admission - {selectedEvent.fields.general_admission_price}
                             </Button>
-                            <Button variant="success" onClick={() => handlepriceClick(
-                                selectedEvent.fields.vip_ticket_price, 'VIP'
+                            <Button variant="success" onClick={() => handlepriceClick(selectedEvent.fields.event_name,
+                                selectedEvent.fields.event_time,selectedEvent.fields.vip_ticket_price, 'VIP'
                             )}>
                                 VIP Ticket - {selectedEvent.fields.vip_ticket_price}
                             </Button>

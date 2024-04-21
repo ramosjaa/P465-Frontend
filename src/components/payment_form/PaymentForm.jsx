@@ -14,6 +14,9 @@ const PaymentForm = () => {
     const ticketType = location.state?.ticketType;
     const priceDetails=location.state;
     const navigate = useNavigate();
+    const sessionData = sessionStorage.getItem('user');
+
+    const userData = JSON.parse(sessionData);
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the default form submission
 
@@ -21,12 +24,14 @@ const PaymentForm = () => {
             alert('Please select a ticket type before proceeding.');
             return; // Stop the function execution here
         }
-
+        console.log(userData.email)
         const paymentData = {
             status: "Success",
+            event_name: priceDetails.event_name,
+            event_time: priceDetails.event_time,
             amount: priceDetails.price,
             type: priceDetails.type, // Include the ticket type
-            user_id: 19
+            user_email: userData.email,
         };
 
         try {
@@ -37,6 +42,8 @@ const PaymentForm = () => {
                 },
                 body: JSON.stringify(paymentData)
             });
+
+            console.log("pay details", paymentData);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
