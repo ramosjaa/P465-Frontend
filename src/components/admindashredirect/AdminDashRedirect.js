@@ -7,7 +7,7 @@ const AdminDashRedirect = () => {
 
   const searchEvents = async (query) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/events/search_events/?q=${query}`);
+      const response = await fetch(`https://p465-backend-latest-1.onrender.com/events/search_events/?q=${query}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

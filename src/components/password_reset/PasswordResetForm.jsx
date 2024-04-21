@@ -15,7 +15,7 @@ function PasswordResetForm() {
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/auth/password_reset_request/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/password_reset_request/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ function PasswordResetForm() {
     const handleCodeSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/auth/verify_reset_code/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/verify_reset_code/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ function PasswordResetForm() {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/auth/password_reset_post/', { // Corrected URL
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/password_reset_post/', { // Corrected URL
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

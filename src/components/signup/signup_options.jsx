@@ -54,7 +54,7 @@ function SignupOptions({ formData, setFormData, onNext, signupOption, setSignUpO
   
     try {
       // Send the credential to your backend API
-      const response = await fetch('http://localhost:8000/auth/google_email/', {
+      const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/google_email/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

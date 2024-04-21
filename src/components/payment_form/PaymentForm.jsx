@@ -30,7 +30,7 @@ const PaymentForm = () => {
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/bookings/payment/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/bookings/payment/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
