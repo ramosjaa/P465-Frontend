@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import "./landingpage.css";
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -7,34 +8,42 @@ const ChatWidget = () => {
     const [message, setMessage] = useState("");
     const [chatHistory, setChatHistory] = useState([]);
     const [ws, setWs] = useState(null);
+    const messageEndRef = useRef(null);
 
-    const handleShow = () => {
+
+    const handleShow = async () => {
         setShow(true);
-        fetchChatHistory();
+        const sessionID = await ensureSession();
+        connectWebSocket(sessionID);
+        fetchChatHistory(sessionID);
     };
     const handleClose = () => setShow(false);
 
-    // Fetch chat history from the backend
-    const fetchChatHistory = async () => {
-        const username = sessionStorage.getItem('chatUsername');
-        if (username) {
-            const response = await axios.get('http://localhost:8000/chat_support/api/messages/by_username/?username=' + encodeURIComponent(username));
-            setChatHistory(response.data);
+    // Ensure session is created or retrieved
+    const ensureSession = async () => {
+        let sessionID = sessionStorage.getItem('sessionID');
+        let username = sessionStorage.getItem('chatUsername');
+        if (!sessionID || !username) {
+            if (!username) {
+                username = generateUsername(); // Generate username if not exists
+                sessionStorage.setItem('chatUsername', username); // Store it for later use
+                console.log("New username generated and stored:", username);
+            }
+            const response = await axios.post('http://localhost:8000/chat_support/api/sessions/', { user_name: username });
+            sessionID = response.data.id;
+            sessionStorage.setItem('sessionID', sessionID);
+            console.log("New session created and stored:", sessionID);
+        } else {
+            console.log("Session and username retrieved from sessionStorage:", sessionID, username);
         }
+        return sessionID;
     };
+    
+    
 
-    // Function to generate a unique username
-    const generateUsername = () => {
-        const prefix = 'Guest';
-        const randomNumber = Math.floor(Math.random() * 1000000);
-        return `${prefix}${randomNumber}`;
-    };
-
-    useEffect(() => {
-        const username = sessionStorage.getItem('chatUsername') || generateUsername();
-        sessionStorage.setItem('chatUsername', username);
-
-        const websocket = new WebSocket(`ws://localhost:8000/ws/chat/${username}/`);
+    // Connect to WebSocket
+    const connectWebSocket = (sessionID) => {
+        const websocket = new WebSocket(`ws://localhost:8000/ws/chat/${sessionID}/`);
 
         websocket.onmessage = function(event) {
             const data = JSON.parse(event.data);
@@ -46,20 +55,45 @@ const ChatWidget = () => {
         websocket.onclose = () => console.log('WebSocket Disconnected');
 
         setWs(websocket);
+    };
 
-        return () => websocket.close();
-    }, []);
+    // Fetch chat history from the backend
+    const fetchChatHistory = async (sessionID) => {
+        const response = await axios.get(`http://localhost:8000/chat_support/api/messages/session/${sessionID}`);
+        setChatHistory(response.data);
+    };
+
+    // Function to generate a unique username
+    const generateUsername = () => {
+        const prefix = 'Guest';
+        const randomNumber = Math.floor(Math.random() * 1000000);
+        return `${prefix}${randomNumber}`;
+    };
+
+    useEffect(() => {
+        return () => {
+            if (ws) {
+                ws.close();
+            }
+        };
+    }, [ws]);
+
+    useEffect(() => {
+        if (messageEndRef.current) {
+          messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, [chatHistory]);
+      
 
     const handleSendMessage = () => {
-        if (ws && message !== "") {
+        const username = sessionStorage.getItem('chatUsername'); // Retrieve the username
+        if (ws && message !== "" && username) {
             const msg = {
                 text: message,
-                sender: sessionStorage.getItem('chatUsername'),
-                id: Date.now()  // Using Date.now() to generate a unique ID for the message
+                sender: username,
+                // Optionally, you might want to include a temporary ID or timestamp
+                tempId: Date.now()
             };
-    
-            // Update chat history optimistically
-            setChatHistory(prevHistory => [...prevHistory, msg]);
     
             // Send the message via WebSocket
             ws.send(JSON.stringify(msg));
@@ -68,6 +102,8 @@ const ChatWidget = () => {
             setMessage('');
         }
     };
+    
+    
     
 
     return (
@@ -102,11 +138,15 @@ const ChatWidget = () => {
                         </Button>
                     </Form>
                     <div className={`chat-history mt-3`}>
-                      {chatHistory.map((msg, index) => (
-                        <div key={index} className={`chat-message ${msg.sender.startsWith('Guest') ? 'user-message' : 'admin-message'}`}>
-                          {msg.text}
-                        </div>
-                      ))}
+                    {chatHistory.map((msg, index) => (
+                    <div
+                        key={index}
+                        className={`chat-message ${msg.sender.startsWith('Guest') ? 'user-message' : 'admin-message'}`}
+                        ref={index === chatHistory.length - 1 ? messageEndRef : null} // Add ref to the last message
+                      >
+                        {msg.text}
+                      </div>
+                    ))}
                     </div>
                 </Modal.Body>
             </Modal>
@@ -115,4 +155,3 @@ const ChatWidget = () => {
 };
 
 export default ChatWidget;
-

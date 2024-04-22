@@ -31,28 +31,30 @@ const AdminDashRedirect = () => {
   }, []);
 
   const handleSelectChat = (chat) => {
-    console.log(chat);  // Log to verify the structure of the chat object
-    if (!chat || !chat.session_id) {
-        console.error("Selected chat is undefined or lacks an 'id' property:", chat);
-        return;  // Prevent further execution if the chat id is undefined
+    fetchAllChats();
+    console.log("Selected chat object:", chat);  // Log to verify the structure of the chat object
+    if (!chat || !chat.session_id || !chat.messages) {
+        console.error("Selected chat is incomplete or lacks required properties (session_id or messages):", chat);
+        return;  // Prevent further execution if the chat object is missing necessary data
     }
+    
     setSelectedChat(chat);
-    setChatMessages([]); // Clear previous messages
+    setChatMessages(chat.messages); // Directly set messages from the passed chat object
 
-    fetch(`http://127.0.0.1:8000/chat_support/api/chat_sessions/${chat.session_id}/`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setChatMessages(data.messages || []);
-      })
-      .catch(error => console.error('Error fetching chat messages:', error));
+    // Check if a WebSocket connection already exists, if so, close it before opening a new one
+    if (ws) {
+        ws.close(); // Close the existing WebSocket connection if open
+    }
+
+    // Establish a new WebSocket connection for the selected chat
+    const newWs = new WebSocket(`ws://localhost:8000/ws/chat/${chat.session_id}/`);
+    newWs.onmessage = event => {
+        const messageData = JSON.parse(event.data);
+        console.log("Received WebSocket message:", messageData);
+        setChatMessages(prev => [...prev, messageData]); // Append new messages received via WebSocket
+    };
+    setWs(newWs); // Update WebSocket connection state
 };
-
-
 
 
   const sendMessage = (e) => {
@@ -132,87 +134,57 @@ const AdminDashRedirect = () => {
         </Navbar>
 
         <Container fluid>
-          <Row>
-            <Col xs={2} className="bg-dark border-end" id="sidebar-wrapper">
-              <Nav className="flex-column">
-                <Nav.Link href="#dashboard">Dashboard</Nav.Link>
-                <Nav.Link href="#createVenue">Create Venue</Nav.Link>
-                <Nav.Link href="#signOut">Sign Out</Nav.Link>
-                {/* Add more sidebar items as needed */}
-              </Nav>
-            </Col>
+      <Row>
+        <Col xs={3} className="bg-dark border-end" id="sidebar-wrapper">
+          <ListGroup>
+            {activeChats.map(chat => (
+              <ListGroup.Item
+                action
+                key={chat.id}
+                onClick={() => handleSelectChat(chat)}
+                className={selectedChat && chat.session_id === selectedChat.session_id ? "active-chat" : ""}
+              >
+                Chat with {chat.user_name}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
 
-            <Col xs={10} id="page-content-wrapper">
-              <Card className="mb-4">
-                <Card.Header as="h5">Dashboard</Card.Header>
-                <Card.Body>
-                  <Card.Title>Welcome back, admin</Card.Title>
-                  <h6>Upcoming Events</h6>
-                  <Row xs={1} md={3} className="g-4">
-                    {events.map(event => (
-                        <Col key={event.pk}>
-                          <Card>
-                            <Card.Img variant="top" src={event.fields.event_image_url} />
-                            <Card.Body>
-                              <Card.Title>{event.fields.event_name}</Card.Title>
-                              <Card.Text>
-                                <p>Location: {event.fields.event_location}</p>
-                                <p>Description: {event.fields.description}</p>
-                                {/* Add more event details as needed */}
-                              </Card.Text>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                  ))}
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col xs={3} id="chat-wrapper">
-            <Row>
-              <Col xs={12}>
-              <ListGroup>
-                  {activeChats.map(chat => (
-                      <ListGroup.Item action key={chat.id} onClick={() => handleSelectChat(chat)}>
-                          Chat with {chat.user_name}
-                      </ListGroup.Item>
-                  ))}
-              </ListGroup>
-
-              </Col>
-              <Col xs={12}>
-                {/* Selected Chat display */}
-                {selectedChat && (
-                  <Card>
-                    <Card.Header as="h5">Chat with {selectedChat.name}</Card.Header>
-                    <Card.Body className="chat-body" style={{ overflowY: 'scroll', height: '300px' }}>
-                      {/* Display messages here */}
-                      {chatMessages.map((msg, index) => (
-                        <div key={index} className={`chat-message ${msg.sender === 'admin' ? 'admin-message' : 'user-message'}`}>
-                          {msg.text}
-                        </div>
-                      ))}
-                      <div ref={messageEndRef} />
-                    </Card.Body>
-                    <Card.Footer>
-                      <Form onSubmit={sendMessage}>
-                        <FormControl
-                          placeholder="Type a message..."
-                          value={newMessage}
-                          onChange={(e) => setNewMessage(e.target.value)}
-                        />
-                        <Button type="submit" variant="outline-secondary">Send</Button>
-                      </Form>
-                    </Card.Footer>
-                  </Card>
-                )}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+        <Col xs={9} id="page-content-wrapper">
+        {selectedChat && (
+  <Card>
+    <Card.Header as="h5">Chat with {selectedChat.user_name}</Card.Header>
+    <Card.Body className="chat-body">
+      {chatMessages.length > 0 ? (
+        chatMessages.map((msg, index) => (
+          <div key={index} className={`chat-message ${msg.sender === 'admin' ? 'user-message' : 'admin-message'}`}>
+            {msg.text}
+          </div>
+        ))
+      ) : (
+        <p>No messages to display.</p>
+      )}
+      <div ref={messageEndRef} />
+    </Card.Body>
+    <Card.Footer>
+      <Form onSubmit={sendMessage}>
+        <InputGroup>
+          <FormControl
+            placeholder="Type a message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+          />
+          <Button type="submit" variant="outline-secondary">Send</Button>
+        </InputGroup>
+      </Form>
+    </Card.Footer>
+  </Card>
+)}
+        </Col>
+      </Row>
+    </Container>
+  </>
+);
 };
 
 export default AdminDashRedirect;
