@@ -29,6 +29,7 @@ const VenueDashboard = () => {
     const [formData, setFormData] = useState({
         eventName: '',
         eventLocation: '',
+        venueUserEmail: '',
         eventImage: '',
         availGATix: '',
         gaPrice: '',
@@ -60,7 +61,8 @@ const VenueDashboard = () => {
         payloadData.append('eventName', formData.eventName);
         payloadData.append('eventTime', eventTime);
         payloadData.append('eventLocation', formData.eventLocation);
-        payloadData.append('eventImage', formData.eventImage);
+        payloadData.append('venueUserEmail', formData.venueUserEmail);
+        payloadData.append('eventImage', eventImage);
         payloadData.append('availGATix', formData.availGATix);
         payloadData.append('gaPrice', formData.gaPrice);
         payloadData.append('availVipTix', formData.availVipTix);
@@ -70,7 +72,7 @@ const VenueDashboard = () => {
 
         console.log(JSON.stringify(payloadData));
         try {
-            const response = await fetch('http://localhost:8000/events/create_event/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/events/create_event/', {
                 method: 'POST',
                 body: payloadData, // Send formData instead of JSON
             });
@@ -116,15 +118,16 @@ const VenueDashboard = () => {
                                             width={"100px"}
                                             src={URL.createObjectURL(eventImage)}
                                         />
-                                        <br />
+                                        <br/>
                                         <button onClick={() => {
                                             setEventImage(null);
-                                        }}>Remove</button>
+                                        }}>Remove
+                                        </button>
                                     </div>
                                 )}
 
-                                <br />
-                                <br />
+                                <br/>
+                                <br/>
 
                                 <input
                                     type="file"
@@ -137,7 +140,7 @@ const VenueDashboard = () => {
                                 <div className="d-flex flex-row align-items-center mb-3">
                                     <div className="form-outline flex-fill mb-0">
                                         <label htmlFor="eventName"
-                                            className="form-label">Event Name</label>
+                                               className="form-label">Event Name</label>
                                         <input
                                             type="text"
                                             id="eventName"
@@ -179,7 +182,7 @@ const VenueDashboard = () => {
                                     <p>You selected: {eventTime}</p>
                                 </div>
 
-                                <br />
+                                <br/>
                                 <div className="d-flex flex-row align-items-center mb-3">
                                     <div className="form-outline flex-fill mb-0">
                                         <label htmlFor="eventLocation"
@@ -192,6 +195,21 @@ const VenueDashboard = () => {
                                             value={formData.eventLocation}
                                             onChange={handleChange}
                                             placeholder="Event Location"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-row align-items-center mb-3">
+                                    <div className="form-outline flex-fill mb-0">
+                                        <label htmlFor="venueUserEmail" className="form-label">Venue User Email</label>
+                                        <input
+                                            type="email"
+                                            id="venueUserEmail"
+                                            name="venueUserEmail"
+                                            className="form-control"
+                                            value={formData.venueUserEmail}
+                                            onChange={handleChange}
+                                            placeholder="Email Address"
                                             required
                                         />
                                     </div>

@@ -15,8 +15,8 @@ function SignupDetails({ formData, setFormData, onNext, onPrevious, signUpOption
       }
   
       // determine whicih sign up option the user chose and send to backend api depending on that
-      // if 'Google' send the form data via POST to http://localhost:8000/auth/google_signup/
-      //if 'Email' send the form data via POST to http://localhost:8000/auth/signup/
+      // if 'Google' send the form data via POST to https://p465-backend-latest-1.onrender.com/auth/google_signup/
+      //if 'Email' send the form data via POST to https://p465-backend-latest-1.onrender.com/auth/signup/
       // Send the formData to your backend for user registration
       // finally, sign the user in and redirect them to the dashboard with ......
       //   useEffect(() => {
@@ -30,9 +30,9 @@ function SignupDetails({ formData, setFormData, onNext, onPrevious, signUpOption
         console.log(signUpOption)
         let url;
         if (signUpOption === 'Google') {
-          url = 'http://localhost:8000/auth/google_signup/';
+          url = 'https://p465-backend-latest-1.onrender.com/auth/google_signup/';
         } else if (signUpOption === 'Email') {
-          url = 'http://localhost:8000/auth/signup/';
+          url = 'https://p465-backend-latest-1.onrender.com/auth/signup/';
         } else {
           throw new Error('Invalid sign-up option');
         }

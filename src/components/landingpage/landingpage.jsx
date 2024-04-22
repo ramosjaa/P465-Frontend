@@ -4,8 +4,15 @@ import './landingpage.css';
 import '../../App.css';
 import { Container, Button } from 'react-bootstrap';
 import ChatWidget from './chatWidget'; // make sure the path matches where you placed your ChatWidget file
+import {useNavigate} from "react-router-dom";
 
 const LandingPage = () => {
+
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate('/dashboard');
+    };
+
     return (
         <div className="home-page">
             <Container fluid className="px-0 main-header">

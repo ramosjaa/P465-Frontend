@@ -43,7 +43,7 @@ function VenueLoginForm() {
         payloadData.append('password', formData.password);
 
         try {
-            const response = await fetch('http://localhost:8000/auth/venue_login/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/venue_login/', {
                 method: 'POST',
                 body: payloadData
             });

@@ -62,7 +62,7 @@ function VenueSignupForm() {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/auth/venue_signup/', {
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/auth/venue_signup/', {
                 method: 'POST',
                 body: payloadData, // Send formData instead of JSON
             });

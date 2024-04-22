@@ -1,0 +1,14 @@
+/* PaymentSuccess.css */
+
+.payment-success-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Make the container fill the viewport height */
+    text-align: center; /* Center-align the text */
+}
+
+.payment-success-content {
+    margin-top: -50px; /* Adjust value to center the content in the page */
+}

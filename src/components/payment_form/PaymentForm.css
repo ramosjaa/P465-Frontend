@@ -1,0 +1,20 @@
+/* PaymentFormCustom.css */
+
+/* Center the entire card and form container */
+.mt-5 {
+    max-width: 500px; /* Adjust this width as needed */
+    margin: 2rem auto; /* Vertically space from top and bottom, and auto for left and right centering */
+    padding: 0 1rem; /* Padding to ensure content doesn't touch the sides of the window */
+}
+
+/* Style the form fields with margin */
+.payment-form .form-group {
+    margin-bottom: 1rem; /* Space between form groups */
+}
+
+/* Style the submit button to have margin from the bottom */
+.payment-form button[type="submit"] {
+    margin-top: 1rem; /* Space above the submit button */
+    margin-bottom: 2rem; /* Space below the submit button before the footer */
+    margin-left: 6rem;
+}
