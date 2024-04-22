@@ -43,7 +43,7 @@ const ChatWidget = () => {
 
     // Connect to WebSocket
     const connectWebSocket = (sessionID) => {
-        const websocket = new WebSocket(`wss://p465-backend-latest-1.onrender.com/ws/chat/${sessionID}/`);
+        const websocket = new WebSocket(`wss://p465-backend-latest-1.onrender.com/ws/chat/${sessionID}//`);
 
         websocket.onmessage = function(event) {
             const data = JSON.parse(event.data);
@@ -59,7 +59,7 @@ const ChatWidget = () => {
 
     // Fetch chat history from the backend
     const fetchChatHistory = async (sessionID) => {
-        const websocket = new WebSocket(`wss://p465-backend-latest-1.onrender.com/ws/chat/${sessionID}/`);
+        const response = await axios.get(`https://p465-backend-latest-1.onrender.com/chat_support/api/messages/session/${sessionID}`);
         setChatHistory(response.data);
     };
 
