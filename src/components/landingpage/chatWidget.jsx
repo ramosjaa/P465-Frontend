@@ -43,7 +43,7 @@ const ChatWidget = () => {
 
     // Connect to WebSocket
     const connectWebSocket = (sessionID) => {
-        const websocket = new WebSocket(`wss://p465-backend-latest-1.onrender.com/ws/chat/${sessionID}//`);
+        const websocket = new WebSocket(`wss://p465-backend-latest-1.onrender.com/ws/chat/${sessionID}/`);
 
         websocket.onmessage = function(event) {
             const data = JSON.parse(event.data);
