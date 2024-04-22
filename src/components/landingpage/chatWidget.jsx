@@ -29,7 +29,7 @@ const ChatWidget = () => {
                 sessionStorage.setItem('chatUsername', username); // Store it for later use
                 console.log("New username generated and stored:", username);
             }
-            const response = await axios.post('http://localhost:8000/chat_support/api/sessions/', { user_name: username });
+            const response = await axios.post('https://p465-backend-latest-1.onrender.com/chat_support/api/sessions/', { user_name: username });
             sessionID = response.data.id;
             sessionStorage.setItem('sessionID', sessionID);
             console.log("New session created and stored:", sessionID);
@@ -59,7 +59,7 @@ const ChatWidget = () => {
 
     // Fetch chat history from the backend
     const fetchChatHistory = async (sessionID) => {
-        const response = await axios.get(`http://localhost:8000/chat_support/api/messages/session/${sessionID}`);
+        const websocket = new WebSocket(`wss://p465-backend-latest-1.onrender.com/ws/chat/${sessionID}/`);
         setChatHistory(response.data);
     };
 

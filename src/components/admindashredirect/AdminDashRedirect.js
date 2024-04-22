@@ -13,7 +13,7 @@ const AdminDashRedirect = () => {
 
   const fetchAllChats = async () => {
     try {
-        const response = await fetch('http://127.0.0.1:8000/chat_support/api/chats/');
+        const response = await fetch('https://p465-backend-latest-1.onrender.com/chat_support/api/chats/');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -47,7 +47,7 @@ const AdminDashRedirect = () => {
     }
 
     // Establish a new WebSocket connection for the selected chat
-    const newWs = new WebSocket(`ws://localhost:8000/ws/chat/${chat.session_id}/`);
+    const newWs = new WebSocket(`wss://p465-backend-latest-1.onrender.com/ws/chat/${chat.session_id}/`);
     newWs.onmessage = event => {
         const messageData = JSON.parse(event.data);
         console.log("Received WebSocket message:", messageData);
