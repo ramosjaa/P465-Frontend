@@ -14,10 +14,27 @@ const Dashboard = () => {
     const [searched, setSearched] = useState(false);
     const [show, setShow] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [upcomingEvents, setUpcomingEvents] = useState([]);
 
     useEffect(() => {
         document.title = 'Dashboard | RhythmReserve';
+        fetchUpcomingEvents();
     }, []);
+
+    const fetchUpcomingEvents = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8001/events/upcoming_events/'); // Ensure this matches your actual API endpoint
+            const data = await response.json();
+            if (data.events && data.events.length) {
+                setUpcomingEvents(data.events);
+            }
+            console.log("upcoming events", data);
+            console.log("upcom", upcomingEvents);
+        } catch (error) {
+            console.error('Failed to fetch upcoming events:', error);
+        }
+    };
+
 
     const handleShow = (event) => {
         setShow(true);
@@ -86,21 +103,33 @@ const Dashboard = () => {
                         )
                     ) : (
                         // Default state, where no search has been performed yet, so show default cards
-                        <div className="row mt-5">
-                            {[...Array(9)].map((_, index) => (
-                                <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
-                                    <div className="card">
-                                        <img
-                                            src="https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1682714955/brooksschoolorg/aucb7xbkp18dwu78z7mw/cabaret23-thumb.jpg"
-                                            className="card-img-top" alt="Placeholder"/>
-                                        <div className="card-body">
-                                            <h5 className="card-title">Venue</h5>
-                                            <p className="card-text">Click to see concerts</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        // Display upcoming events if no search has been performed
+                        upcomingEvents.length > 0 ? (
+                            <Row xs={1} md={3} className="g-4">
+                                {upcomingEvents.slice(3, 12).map((event, index) => (
+                                    <Col key={index}>
+                                        <Card>
+                                            <Card.Img variant="top" src={event.event_image_url} />
+                                            <Card.Body>
+                                                <Card.Title>{event.event_name}</Card.Title>
+                                                <Card.Text>
+                                                    <p>Location: {event.event_location}</p>
+                                                    <p>Description: {event.description}</p>
+                                                    <p>Event Time: {event.event_time}</p>
+                                                    <p>General Price: {event.general_admission_price}</p>
+                                                    <p>VIP Price: {event.vip_ticket_price}</p>
+                                                </Card.Text>
+                                                <Button variant="primary" onClick={() => handleShow(event)}>Buy Tickets</Button>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
+                        ) : (
+                            <div className="row mt-5">
+                                <p>No upcoming events to show or search is active</p>
+                            </div>
+                        )
                     )}
                 </div>
             </div>
