@@ -23,7 +23,7 @@ const Dashboard = () => {
 
     const fetchUpcomingEvents = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8001/events/upcoming_events/'); // Ensure this matches your actual API endpoint
+            const response = await fetch('https://p465-backend-latest-1.onrender.com/events/upcoming_events/'); // Ensure this matches your actual API endpoint
             const data = await response.json();
             if (data.events && data.events.length) {
                 setUpcomingEvents(data.events);
